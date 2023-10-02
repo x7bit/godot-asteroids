@@ -1,0 +1,28 @@
+[gd_resource type="ParticleProcessMaterial" load_steps=5 format=3 uid="uid://dvpsxlxusptfc"]
+
+[ext_resource type="Gradient" uid="uid://bpb8m0lufhixw" path="res://resources/explosion_gradient.tres" id="1_4qhdm"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_cteop"]
+gradient = ExtResource("1_4qhdm")
+
+[sub_resource type="Curve" id="Curve_03f0g"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, 0.25), -1.74737, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_wfui7"]
+curve = SubResource("Curve_03f0g")
+
+[resource]
+lifetime_randomness = 0.2
+particle_flag_disable_z = true
+spread = 180.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = 400.0
+initial_velocity_max = 600.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+linear_accel_max = 40.0
+scale_min = 4.0
+scale_max = 6.0
+scale_curve = SubResource("CurveTexture_wfui7")
+color_initial_ramp = SubResource("GradientTexture1D_cteop")

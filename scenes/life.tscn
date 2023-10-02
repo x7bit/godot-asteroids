@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=3 uid="uid://c1f3cfhdmngro"]
+
+[ext_resource type="Texture2D" uid="uid://bmuj716g31ygl" path="res://assets/textures/life_ship.png" id="1_ghi80"]
+
+[node name="Life" type="TextureRect"]
+offset_right = 162.0
+offset_bottom = 216.0
+rotation = -0.00168396
+texture = ExtResource("1_ghi80")
+expand_mode = 3
+stretch_mode = 4

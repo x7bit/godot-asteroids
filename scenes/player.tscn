@@ -1,0 +1,83 @@
+[gd_scene load_steps=11 format=3 uid="uid://c3jhgad74myma"]
+
+[ext_resource type="Texture2D" uid="uid://byl5v6ts0xaq" path="res://assets/textures/player_ship.png" id="1_1mnyh"]
+[ext_resource type="Texture2D" uid="uid://c17yllrcrp0q7" path="res://assets/textures/thrust.png" id="2_1232q"]
+[ext_resource type="AudioStream" uid="uid://bukbd1ir5nltn" path="res://assets/audio/thrust.ogg" id="3_fkaql"]
+[ext_resource type="AudioStream" uid="uid://b2aa3lhc6m3w1" path="res://assets/audio/explosion.ogg" id="4_fd3ee"]
+[ext_resource type="Material" uid="uid://di6nvet7jhi37" path="res://resources/fire1_particle_material.tres" id="5_4ny6w"]
+[ext_resource type="Material" uid="uid://dvpsxlxusptfc" path="res://resources/explosion_particle_material.tres" id="5_upsof"]
+[ext_resource type="Texture2D" uid="uid://pbdxinqfyq1n" path="res://assets/textures/fire_01.png" id="6_4k88w"]
+[ext_resource type="Material" uid="uid://dbuy3era77ua7" path="res://resources/fire2_particle_material.tres" id="7_7h6r2"]
+[ext_resource type="Texture2D" uid="uid://ec3n8w6ayimx" path="res://assets/textures/fire_02.png" id="7_a2wav"]
+
+[sub_resource type="Environment" id="Environment_q32vf"]
+background_mode = 3
+glow_enabled = true
+glow_blend_mode = 1
+
+[node name="Player" type="CharacterBody2D"]
+position = Vector2(640, 360)
+scale = Vector2(0.5, 0.5)
+collision_layer = 2
+collision_mask = 5
+
+[node name="Sprite2D_Ship" type="Sprite2D" parent="."]
+position = Vector2(-0.400024, -3.79999)
+texture = ExtResource("1_1mnyh")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2(-166.4, -387.8)
+polygon = PackedVector2Array(112, 334, 140, 290, 192, 290, 222, 336, 232, 452, 222, 482, 202, 466, 184, 482, 150, 482, 130, 466, 110, 484, 100, 450)
+
+[node name="Muzzle1" type="Node2D" parent="."]
+position = Vector2(-12, -76)
+
+[node name="Muzzle2" type="Node2D" parent="."]
+position = Vector2(9, -76)
+
+[node name="Sprite2D_ThrustL" type="Sprite2D" parent="."]
+position = Vector2(-13, 110)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_1232q")
+
+[node name="Sprite2D_ThrustR" type="Sprite2D" parent="."]
+position = Vector2(12.2, 110)
+scale = Vector2(1.2, 1.2)
+texture = ExtResource("2_1232q")
+
+[node name="ThrustAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_fkaql")
+
+[node name="DieAudio" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_fd3ee")
+
+[node name="DieParticles" type="Node2D" parent="."]
+
+[node name="ExplosionParticles" type="GPUParticles2D" parent="DieParticles"]
+emitting = false
+amount = 70
+process_material = ExtResource("5_upsof")
+lifetime = 0.7
+one_shot = true
+explosiveness = 1.0
+
+[node name="Fire1Particles" type="GPUParticles2D" parent="DieParticles"]
+modulate = Color(3, 1, 1, 1)
+emitting = false
+process_material = ExtResource("5_4ny6w")
+texture = ExtResource("6_4k88w")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.1
+
+[node name="Fire2Particles" type="GPUParticles2D" parent="DieParticles"]
+modulate = Color(2.5, 1.5, 1, 1)
+emitting = false
+process_material = ExtResource("7_7h6r2")
+texture = ExtResource("7_a2wav")
+lifetime = 0.5
+one_shot = true
+explosiveness = 0.1
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="DieParticles"]
+environment = SubResource("Environment_q32vf")

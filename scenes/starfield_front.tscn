@@ -1,0 +1,13 @@
+[gd_scene load_steps=3 format=3 uid="uid://c503bafkvf2yr"]
+
+[ext_resource type="Material" uid="uid://b1c3a3jiadcum" path="res://resources/starfield_front_particle_material.tres" id="1_i805c"]
+[ext_resource type="Texture2D" uid="uid://bmmmfhlqdw70m" path="res://assets/textures/star_glow.png" id="2_5t50p"]
+
+[node name="StarfieldFront" type="GPUParticles2D"]
+z_index = -90
+position = Vector2(1281, 360)
+amount = 30
+process_material = ExtResource("1_i805c")
+texture = ExtResource("2_5t50p")
+lifetime = 42.7
+preprocess = 85.4

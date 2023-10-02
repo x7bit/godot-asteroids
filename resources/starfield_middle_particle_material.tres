@@ -1,0 +1,20 @@
+[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://hj2c0yff1l2u"]
+
+[ext_resource type="Gradient" uid="uid://bsa6dt2f6p2tr" path="res://resources/starfield_gradient.tres" id="1_oerrc"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_1ksqf"]
+gradient = ExtResource("1_oerrc")
+
+[resource]
+emission_shape = 3
+emission_box_extents = Vector3(1, 360, 1)
+particle_flag_disable_z = true
+spread = 0.0
+gravity = Vector3(0, 0, 0)
+initial_velocity_min = -20.0
+initial_velocity_max = -20.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+scale_min = 0.02
+scale_max = 0.02
+color_initial_ramp = SubResource("GradientTexture1D_1ksqf")

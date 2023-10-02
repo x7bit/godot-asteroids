@@ -1,0 +1,273 @@
+[gd_scene load_steps=3 format=3 uid="uid://chk7xkp2mqp7v"]
+
+[ext_resource type="Script" path="res://scripts/menu.gd" id="1_by63g"]
+[ext_resource type="FontFile" uid="uid://dp5yd0a61l0gb" path="res://assets/fonts/kenvector_future_thin.ttf" id="2_nvajy"]
+
+[node name="Menu" type="Control"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_by63g")
+
+[node name="MainMenu" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MainVBoxContainer" type="VBoxContainer" parent="MainMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.5
+offset_top = -105.0
+offset_right = 82.5
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TitleLabel" type="Label" parent="MainMenu/MainVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 56
+text = "TITLE"
+horizontal_alignment = 1
+
+[node name="GameButton" type="Button" parent="MainMenu/MainVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "GAME"
+
+[node name="OptionsButton" type="Button" parent="MainMenu/MainVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "OPTIONS"
+
+[node name="HighScoreButton" type="Button" parent="MainMenu/MainVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "HIGH SCORES"
+
+[node name="ExitButton" type="Button" parent="MainMenu/MainVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "EXIT"
+
+[node name="OptionMenu" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="OptionsVBoxContainer" type="VBoxContainer" parent="OptionMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -205.0
+offset_top = -129.0
+offset_right = 205.0
+offset_bottom = 129.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="OptionsLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 56
+text = "OPTIONS"
+horizontal_alignment = 1
+
+[node name="FullScreenCheckButton" type="CheckButton" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "FULL SCREEN:"
+
+[node name="DifficultyHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+
+[node name="DifficultyLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "DIFFICULTY: "
+
+[node name="DifficultyOptionButton" type="OptionButton" parent="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+item_count = 3
+selected = 1
+popup/item_0/text = "EASY"
+popup/item_0/id = 0
+popup/item_1/text = "NORMAL"
+popup/item_1/id = 1
+popup/item_2/text = "HARD"
+popup/item_2/id = 2
+
+[node name="DetailHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+
+[node name="DetailLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "DETAIL: "
+
+[node name="DetailOptionButton" type="OptionButton" parent="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+item_count = 3
+selected = 2
+popup/item_0/text = "LOW"
+popup/item_0/id = 0
+popup/item_1/text = "MEDIUM"
+popup/item_1/id = 1
+popup/item_2/text = "HIGH"
+popup/item_2/id = 2
+
+[node name="BackButton" type="Button" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "BACK"
+
+[node name="HighScoreMenu" type="Control" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HighScoreVBoxContainer" type="VBoxContainer" parent="HighScoreMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HighScoreLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 56
+text = "HIGH SCORES"
+
+[node name="EasyHBoxContainer" type="HBoxContainer" parent="HighScoreMenu/HighScoreVBoxContainer"]
+layout_mode = 2
+
+[node name="EasyLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/EasyHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "EASY:"
+
+[node name="EasyScoreLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/EasyHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="NormalHBoxContainer" type="HBoxContainer" parent="HighScoreMenu/HighScoreVBoxContainer"]
+layout_mode = 2
+
+[node name="NormalLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/NormalHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "NORMAL:"
+
+[node name="NormalScoreLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/NormalHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="HardHBoxContainer" type="HBoxContainer" parent="HighScoreMenu/HighScoreVBoxContainer"]
+layout_mode = 2
+
+[node name="HardLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/HardHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "HARD:"
+
+[node name="HardScoreLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/HardHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "0"
+
+[node name="BackButton" type="Button" parent="HighScoreMenu/HighScoreVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "BACK"
+
+[connection signal="pressed" from="MainMenu/MainVBoxContainer/GameButton" to="." method="_on_game_button_pressed"]
+[connection signal="pressed" from="MainMenu/MainVBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MainMenu/MainVBoxContainer/HighScoreButton" to="." method="_on_high_score_button_pressed"]
+[connection signal="pressed" from="MainMenu/MainVBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
+[connection signal="toggled" from="OptionMenu/OptionsVBoxContainer/FullScreenCheckButton" to="." method="_on_full_screen_check_button_toggled"]
+[connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer/DifficultyOptionButton" to="." method="_on_difficulty_option_button_item_selected"]
+[connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="pressed" from="OptionMenu/OptionsVBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="HighScoreMenu/HighScoreVBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
