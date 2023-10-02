@@ -13,6 +13,7 @@ var lives: int = 3
 var score: int = 0
 var game_round: int = 0
 var game_started: bool = false
+var next_round_pause: bool = false
 var high_scores = { Difficulty.EASY: 0, Difficulty.NORMAL: 0, Difficulty.HARD: 0 }
 
 var high_score: int:

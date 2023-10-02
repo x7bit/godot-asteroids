@@ -44,7 +44,7 @@ func _process(delta: float):
 		thrust_forward = true
 	if Input.is_action_just_released("move_forward"):
 		thrust_forward = false
-	if Input.is_action_pressed("shoot") && !laser_cooldown:
+	if Input.is_action_pressed("shoot") && !laser_cooldown && !Global.next_round_pause:
 		laser_cooldown = true
 		shoot()
 		await get_tree().create_timer(RATE_OF_LASER).timeout

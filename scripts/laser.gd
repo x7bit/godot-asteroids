@@ -15,8 +15,8 @@ func _ready():
 
 func _process(delta: float):
 	if exploded: return
-	var frame_distance := delta * SPEED
-	global_position += Vector2(0, -1).rotated(rotation) * frame_distance
+	var frame_distance := SPEED * delta
+	global_position += Vector2.UP.rotated(rotation) * frame_distance
 	distance += frame_distance
 	if distance > RANGE:
 		queue_free()

@@ -20,3 +20,13 @@ func get_poly_rect(poly: PackedVector2Array, scale: Vector2) -> Rect2:
 			max_y = vec_scaled.y
 	
 	return Rect2(min_x, min_y, abs(min_x - max_x), abs(min_y - max_y))
+
+func get_vector_based_up_rotation(vector: Vector2) -> float:
+	return -vector.angle_to(Vector2.UP)
+
+func get_explosion_rotation(laser: Laser, asteroid: Asteroid) -> float:
+	if asteroid.size == Asteroid.AsteroidSize.SMALL: return 0.0
+	var laser_vector = Vector2.UP.rotated(laser.rotation) * Laser.SPEED
+	var asteroid_mass_multiplier = pow(2, asteroid.size) * 2
+	var asteroid_vector = Vector2.UP.rotated(asteroid.rotation) * asteroid.speed * asteroid_mass_multiplier
+	return get_vector_based_up_rotation(laser_vector + asteroid_vector)

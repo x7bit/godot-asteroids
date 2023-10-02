@@ -13,8 +13,6 @@ const AsteroidScene: PackedScene = preload("res://scenes/asteroid.tscn")
 @onready var laser_audio: AudioStreamPlayer = $Audio/LaserAudio
 @onready var hit_audio: AudioStreamPlayer = $Audio/HitAudio
 
-var next_round_pause := false
-
 func _ready():
 	Global.init()
 	starfield.load_starfield()
@@ -93,14 +91,12 @@ func _on_asteroid_exploded(pos: Vector2, laser_rotation: float, size: Asteroid.A
 	Global.score += points
 	ui_hud.update()
 	match size:
-		Asteroid.AsteroidSize.LARGE:
-			spawn_asteroid(pos, laser_rotation + randf_range(0, PI / 4), Asteroid.AsteroidSize.MEDIUM)
-			spawn_asteroid(pos, laser_rotation - randf_range(0, PI / 4), Asteroid.AsteroidSize.MEDIUM)
 		Asteroid.AsteroidSize.MEDIUM:
 			spawn_asteroid(pos, laser_rotation + randf_range(0, PI / 4), Asteroid.AsteroidSize.SMALL)
 			spawn_asteroid(pos, laser_rotation - randf_range(0, PI / 4), Asteroid.AsteroidSize.SMALL)
-		Asteroid.AsteroidSize.SMALL:
-			pass
+		Asteroid.AsteroidSize.LARGE:
+			spawn_asteroid(pos, laser_rotation + randf_range(0, PI / 4), Asteroid.AsteroidSize.MEDIUM)
+			spawn_asteroid(pos, laser_rotation - randf_range(0, PI / 4), Asteroid.AsteroidSize.MEDIUM)
 
 func new_game():
 	pass
@@ -129,11 +125,11 @@ func spawn_asteroid(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSi
 	asteroids.call_deferred("add_child", asteroid)
 
 func next_round(first_round: bool):
-	if !next_round_pause:
-		next_round_pause = true
+	if !Global.next_round_pause:
+		Global.next_round_pause = true
 		if !first_round: Global.game_round += 1
 		ui_hud.show_round()
 		await get_tree().create_timer(2.5).timeout
 		ui_hud.hide_round()
 		spawn_large_asteroids()
-		next_round_pause = false
+		Global.next_round_pause = false
