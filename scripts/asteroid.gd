@@ -2,17 +2,18 @@ class_name Asteroid extends Area2D
 
 enum AsteroidSize{SMALL, MEDIUM, LARGE}
 
-signal exploded(pos: Vector2, laser_rotation: float, size: Asteroid.AsteroidSize, points: int)
+signal exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int)
 
-const BASE_SPEED := 50.0
+const BASE_SPEED: float = 50.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var cshape: CollisionShape2D = $CollisionShape2D
 
-@export var size := AsteroidSize.LARGE
-var speed := BASE_SPEED
-var speed_multiplier := 1.0
-var alfa := 1.0
+@export var size: AsteroidSize = AsteroidSize.LARGE
+var speed: float = BASE_SPEED
+var speed_multiplier: float = 1.0
+var move_rotation: float = 0.0
+var alfa: float = 1.0
 
 var points: int:
 	get:
@@ -31,6 +32,7 @@ var explosion_scale: float:
 			_: return 0.0
 
 func _ready():
+	rotation = randf_range(0, 2 * PI)
 	match size:
 		AsteroidSize.SMALL:
 			speed = randf_range(speed_multiplier * 2.5 * BASE_SPEED, speed_multiplier * 3.5 * BASE_SPEED)
@@ -53,7 +55,7 @@ func _process(delta: float):
 		alfa = minf(alfa + 1.5 * delta, 1.0)
 		sprite.modulate.a = alfa
 	else:
-		global_position += Vector2.UP.rotated(rotation) * speed * delta
+		global_position += Vector2.UP.rotated(move_rotation) * speed * delta
 		var screen_size: Vector2 = get_viewport_rect().size
 		var asteroid_half_size: Vector2 = cshape.shape.get_rect().size / 2
 		if (global_position.y + asteroid_half_size.y) < 0:
@@ -70,6 +72,8 @@ func _on_area_entered(area: Area2D):
 		if !area.exploded:
 			explode(area)
 			area.explode_and_free(explosion_scale)
+	if area is Asteroid:
+		print("TODO: Asteroids bounce")
 
 func _on_body_entered(body: CharacterBody2D):
 	if body is Player:

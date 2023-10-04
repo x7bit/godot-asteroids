@@ -1,4 +1,4 @@
-extends Control
+class_name UIHud extends Control
 
 var LifeScene: PackedScene = preload("res://scenes/life.tscn")
 

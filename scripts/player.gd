@@ -16,8 +16,6 @@ const LaserScene: PackedScene = preload("res://scenes/laser.tscn")
 @onready var cpoly:CollisionPolygon2D = $CollisionPolygon2D
 @onready var muzzles: Array[Node2D] = [$Muzzle1, $Muzzle2]
 @onready var thrusts: Array[Sprite2D] = [$Sprite2D_ThrustL, $Sprite2D_ThrustR]
-@onready var die_audio: AudioStreamPlayer = $DieAudio
-@onready var thrust_audio: AudioStreamPlayer = $ThrustAudio
 @onready var die_particles: Array[GPUParticles2D] = [
 	$DieParticles/Fire1Particles,
 	$DieParticles/Fire2Particles,
@@ -31,6 +29,10 @@ var muzzle_idx := 0
 var thrust_forward := false
 var thrust_alfa := 0.0
 
+var thrust_audio: AudioStreamPlayer:
+	set(value):
+		thrust_audio = value
+
 func _ready():
 	thrust_forward = false
 	thrust_alfa = 0.0
@@ -39,7 +41,6 @@ func _ready():
 
 func _process(delta: float):
 	if !alive || !Global.game_started: return
-	
 	if Input.is_action_just_pressed("move_forward"):
 		thrust_forward = true
 	if Input.is_action_just_released("move_forward"):
@@ -49,7 +50,6 @@ func _process(delta: float):
 		shoot()
 		await get_tree().create_timer(RATE_OF_LASER).timeout
 		laser_cooldown = false
-	
 	if thrust_forward:
 		if !thrust_audio.playing: thrust_audio.play()
 		if thrust_alfa < 1.0:
@@ -77,9 +77,7 @@ func move(delta: float):
 		rotate(deg_to_rad(-ROTATION_SPEED * delta))
 	if Input.is_action_pressed("rotate_right"):
 		rotate(deg_to_rad(ROTATION_SPEED * delta))
-	
 	velocity = velocity.limit_length(MAX_SPEED).move_toward(Vector2.ZERO, GRAVITY)
-	
 	var screen_size: Vector2 = get_viewport_rect().size
 	var player_half_size: Vector2 = Util.get_poly_rect(cpoly.get_polygon(), scale).size / 2
 	if (global_position.y + player_half_size.y) < 0:
@@ -104,7 +102,6 @@ func die():
 		alive = false
 		velocity = Vector2.ZERO
 		rotation = 0
-		die_audio.play()
 		if thrust_audio.playing: thrust_audio.stop()
 		thrust_forward = false
 		thrust_alfa = 0.0

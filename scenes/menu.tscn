@@ -46,6 +46,7 @@ offset_right = 82.5
 offset_bottom = 105.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="TitleLabel" type="Label" parent="MainMenu/MainVBoxContainer"]
@@ -73,6 +74,12 @@ theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
 text = "HIGH SCORES"
 
+[node name="CreditsButton" type="Button" parent="MainMenu/MainVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "CREDITS"
+
 [node name="ExitButton" type="Button" parent="MainMenu/MainVBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_nvajy")
@@ -80,7 +87,6 @@ theme_override_font_sizes/font_size = 32
 text = "EXIT"
 
 [node name="OptionMenu" type="Control" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -107,6 +113,7 @@ offset_right = 205.0
 offset_bottom = 129.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 8
 alignment = 1
 
 [node name="OptionsLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer"]
@@ -124,13 +131,14 @@ text = "FULL SCREEN:"
 
 [node name="DifficultyHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="DifficultyLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
-text = "DIFFICULTY: "
+text = "DIFFICULTY:"
 
 [node name="DifficultyOptionButton" type="OptionButton" parent="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer"]
 layout_mode = 2
@@ -147,13 +155,14 @@ popup/item_2/id = 2
 
 [node name="DetailHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="DetailLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
-text = "DETAIL: "
+text = "DETAIL:"
 
 [node name="DetailOptionButton" type="OptionButton" parent="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer"]
 layout_mode = 2
@@ -168,6 +177,50 @@ popup/item_1/id = 1
 popup/item_2/text = "HIGH"
 popup/item_2/id = 2
 
+[node name="Label" type="Label" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "VOLUME:"
+
+[node name="SfxHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="SfxLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer/SfxHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "SFX:"
+
+[node name="SfxHSlider" type="HSlider" parent="OptionMenu/OptionsVBoxContainer/SfxHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.001
+value = 1.0
+
+[node name="MusicHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MusicLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer/MusicHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "MUSIC:"
+
+[node name="MusicHSlider" type="HSlider" parent="OptionMenu/OptionsVBoxContainer/MusicHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.001
+value = 1.0
+
 [node name="BackButton" type="Button" parent="OptionMenu/OptionsVBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_nvajy")
@@ -175,6 +228,7 @@ theme_override_font_sizes/font_size = 32
 text = "BACK"
 
 [node name="HighScoreMenu" type="Control" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -201,6 +255,7 @@ offset_right = 20.0
 offset_bottom = 20.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/separation = 8
 
 [node name="HighScoreLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer"]
 layout_mode = 2
@@ -210,6 +265,7 @@ text = "HIGH SCORES"
 
 [node name="EasyHBoxContainer" type="HBoxContainer" parent="HighScoreMenu/HighScoreVBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="EasyLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/EasyHBoxContainer"]
 layout_mode = 2
@@ -226,6 +282,7 @@ text = "0"
 
 [node name="NormalHBoxContainer" type="HBoxContainer" parent="HighScoreMenu/HighScoreVBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="NormalLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/NormalHBoxContainer"]
 layout_mode = 2
@@ -242,6 +299,7 @@ text = "0"
 
 [node name="HardHBoxContainer" type="HBoxContainer" parent="HighScoreMenu/HighScoreVBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 12
 
 [node name="HardLabel" type="Label" parent="HighScoreMenu/HighScoreVBoxContainer/HardHBoxContainer"]
 layout_mode = 2
@@ -262,12 +320,114 @@ theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
 text = "BACK"
 
+[node name="CreditsMenu" type="Control" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -640.0
+offset_top = -360.0
+offset_right = 640.0
+offset_bottom = 360.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="CreditsVBoxContainer" type="VBoxContainer" parent="CreditsMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.5
+offset_top = -105.0
+offset_right = 82.5
+offset_bottom = 105.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/separation = 8
+alignment = 1
+
+[node name="CreditsLabel" type="Label" parent="CreditsMenu/CreditsVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 56
+text = "CREDITS"
+horizontal_alignment = 1
+
+[node name="CodeHBoxContainer" type="HBoxContainer" parent="CreditsMenu/CreditsVBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="CodeLabel" type="Label" parent="CreditsMenu/CreditsVBoxContainer/CodeHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "PROGRAMMING:"
+
+[node name="CodeButton" type="Button" parent="CreditsMenu/CreditsVBoxContainer/CodeHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "X7BIT"
+
+[node name="MusicHBoxContainer" type="HBoxContainer" parent="CreditsMenu/CreditsVBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="MusicLabel" type="Label" parent="CreditsMenu/CreditsVBoxContainer/MusicHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "MUSIC:"
+
+[node name="MusicButton" type="Button" parent="CreditsMenu/CreditsVBoxContainer/MusicHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "WHITE BAT AUDIO"
+
+[node name="ThanksHBoxContainer" type="HBoxContainer" parent="CreditsMenu/CreditsVBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ThanksLabel" type="Label" parent="CreditsMenu/CreditsVBoxContainer/ThanksHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "THANKS:"
+
+[node name="ThanksButton" type="Button" parent="CreditsMenu/CreditsVBoxContainer/ThanksHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "KAAN ALPAR"
+
+[node name="BackButton" type="Button" parent="CreditsMenu/CreditsVBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "BACK"
+
 [connection signal="pressed" from="MainMenu/MainVBoxContainer/GameButton" to="." method="_on_game_button_pressed"]
 [connection signal="pressed" from="MainMenu/MainVBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="MainMenu/MainVBoxContainer/HighScoreButton" to="." method="_on_high_score_button_pressed"]
+[connection signal="pressed" from="MainMenu/MainVBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="MainMenu/MainVBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="toggled" from="OptionMenu/OptionsVBoxContainer/FullScreenCheckButton" to="." method="_on_full_screen_check_button_toggled"]
 [connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer/DifficultyOptionButton" to="." method="_on_difficulty_option_button_item_selected"]
 [connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="value_changed" from="OptionMenu/OptionsVBoxContainer/SfxHBoxContainer/SfxHSlider" to="." method="_on_sfx_h_slider_value_changed"]
+[connection signal="value_changed" from="OptionMenu/OptionsVBoxContainer/MusicHBoxContainer/MusicHSlider" to="." method="_on_music_h_slider_value_changed"]
 [connection signal="pressed" from="OptionMenu/OptionsVBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
 [connection signal="pressed" from="HighScoreMenu/HighScoreVBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
+[connection signal="pressed" from="CreditsMenu/CreditsVBoxContainer/CodeHBoxContainer/CodeButton" to="." method="_on_code_button_pressed"]
+[connection signal="pressed" from="CreditsMenu/CreditsVBoxContainer/MusicHBoxContainer/MusicButton" to="." method="_on_music_button_pressed"]
+[connection signal="pressed" from="CreditsMenu/CreditsVBoxContainer/ThanksHBoxContainer/ThanksButton" to="." method="_on_thanks_button_pressed"]
+[connection signal="pressed" from="CreditsMenu/CreditsVBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

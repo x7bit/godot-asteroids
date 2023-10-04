@@ -1,9 +1,7 @@
-[gd_scene load_steps=11 format=3 uid="uid://c3jhgad74myma"]
+[gd_scene load_steps=9 format=3 uid="uid://c3jhgad74myma"]
 
 [ext_resource type="Texture2D" uid="uid://byl5v6ts0xaq" path="res://assets/textures/player_ship.png" id="1_1mnyh"]
 [ext_resource type="Texture2D" uid="uid://c17yllrcrp0q7" path="res://assets/textures/thrust.png" id="2_1232q"]
-[ext_resource type="AudioStream" uid="uid://bukbd1ir5nltn" path="res://assets/audio/thrust.ogg" id="3_fkaql"]
-[ext_resource type="AudioStream" uid="uid://b2aa3lhc6m3w1" path="res://assets/audio/explosion.ogg" id="4_fd3ee"]
 [ext_resource type="Material" uid="uid://di6nvet7jhi37" path="res://resources/fire1_particle_material.tres" id="5_4ny6w"]
 [ext_resource type="Material" uid="uid://dvpsxlxusptfc" path="res://resources/explosion_particle_material.tres" id="5_upsof"]
 [ext_resource type="Texture2D" uid="uid://pbdxinqfyq1n" path="res://assets/textures/fire_01.png" id="6_4k88w"]
@@ -44,12 +42,6 @@ texture = ExtResource("2_1232q")
 position = Vector2(12.2, 110)
 scale = Vector2(1.2, 1.2)
 texture = ExtResource("2_1232q")
-
-[node name="ThrustAudio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("3_fkaql")
-
-[node name="DieAudio" type="AudioStreamPlayer" parent="."]
-stream = ExtResource("4_fd3ee")
 
 [node name="DieParticles" type="Node2D" parent="."]
 

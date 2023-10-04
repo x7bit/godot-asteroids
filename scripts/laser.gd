@@ -1,7 +1,7 @@
 class_name Laser extends Area2D
 
 const SPEED := 700.0
-const RANGE := 600.0 
+const RANGE := 600.0
 
 @onready var laser_sprite: Sprite2D = $Sprite2D
 @onready var laser_cshape: CollisionShape2D = $CollisionShape2D
@@ -39,4 +39,3 @@ func explode_and_free(explosion_scale: float):
 	laser_explosion.emitting = true
 	await get_tree().create_timer(laser_explosion.lifetime + 0.1).timeout
 	queue_free()
-	

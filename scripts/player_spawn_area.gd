@@ -1,4 +1,4 @@
-extends Area2D
+class_name PlayerSpawnArea extends Area2D
 
 var is_empty: bool:
 	get:

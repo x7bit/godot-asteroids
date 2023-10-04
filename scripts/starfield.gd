@@ -1,4 +1,4 @@
-extends Node2D
+class_name Starfield extends Node2D
 
 const StarfieldBackScene: PackedScene = preload("res://scenes/starfield_back.tscn")
 const StarfieldMiddleScene: PackedScene = preload("res://scenes/starfield_middle.tscn")
@@ -10,7 +10,7 @@ func _ready():
 func _process(_delta: float):
 	pass
 
-func load_starfield():
+func set_starfield():
 	match Global.detail:
 		Global.Detail.LOW:
 			match get_children().size():

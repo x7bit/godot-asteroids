@@ -9,6 +9,10 @@ enum Difficulty{EASY, NORMAL, HARD}
 var window_mode := WindowMode.WINDOW
 var difficulty := Difficulty.NORMAL
 var detail := Detail.HIGH
+var sfx_volume: float = 1.0
+var sfx_volume_db: float = 0.0
+var music_volume: float = 0.8
+var music_volume_db: float = linear_to_db(0.8)
 var lives: int = 3
 var score: int = 0
 var game_round: int = 0
@@ -50,13 +54,19 @@ func init():
 	lives = 3
 	score = 0
 	game_round = 0
-	
+	load_config()
+
+func load_config():
 	var config = ConfigFile.new()
 	var err = config.load(CONFIG_FILE)
 	if err != OK:
 		window_mode = WindowMode.WINDOW
 		difficulty = Difficulty.NORMAL
 		detail = Detail.HIGH
+		sfx_volume = 1.0
+		sfx_volume_db = 0.0
+		music_volume = 0.8
+		music_volume_db = Util.volume_to_db(music_volume)
 		high_scores[Difficulty.EASY] = 0
 		high_scores[Difficulty.NORMAL] = 0
 		high_scores[Difficulty.HARD] = 0
@@ -65,6 +75,10 @@ func init():
 		window_mode = config.get_value("options", "window_mode", WindowMode.WINDOW)
 		difficulty = config.get_value("options", "difficulty", Difficulty.NORMAL)
 		detail = config.get_value("options", "detail", Detail.HIGH)
+		sfx_volume = config.get_value("options", "sfx_volume", 1.0)
+		sfx_volume_db = Util.volume_to_db(sfx_volume)
+		music_volume = config.get_value("options", "music_volume", 0.8)
+		music_volume_db = Util.volume_to_db(music_volume)
 		high_scores[Difficulty.EASY] = config.get_value("highscore", "easy", 0)
 		high_scores[Difficulty.NORMAL] = config.get_value("highscore", "normal", 0)
 		high_scores[Difficulty.HARD] = config.get_value("highscore", "hard", 0)
@@ -74,6 +88,8 @@ func save_config():
 	config.set_value("options", "window_mode", window_mode)
 	config.set_value("options", "difficulty", difficulty)
 	config.set_value("options", "detail", detail)
+	config.set_value("options", "sfx_volume", sfx_volume)
+	config.set_value("options", "music_volume", music_volume)
 	config.set_value("highscore", "easy", high_scores[Difficulty.EASY])
 	config.set_value("highscore", "normal", high_scores[Difficulty.NORMAL])
 	config.set_value("highscore", "hard", high_scores[Difficulty.HARD])
