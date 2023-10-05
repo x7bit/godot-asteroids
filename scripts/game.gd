@@ -32,12 +32,13 @@ func _ready():
 		player.connect("laser_shoot", _on_player_laser_shoot)
 		player.connect("died", _on_player_died)
 		next_round(true)
-		MusicController.play_music(MusicController.Type.GAME, false, false)
+		MusicController.set_new_game_music()
+		MusicController.play_music_immediate(MusicController.Type.GAME, false, false)
 	else:
 		ui_hud.visible = false
 		player.visible = false
 		ui_menu.show_menu(ui_menu.MenuFace.MAIN)
-		MusicController.play_music(MusicController.Type.INTRO, false, false)
+		MusicController.play_music_immediate(MusicController.Type.INTRO, false, false)
 
 func _process(_delta: float):
 	if Input.is_action_pressed("pause") && Global.lives > 0:
