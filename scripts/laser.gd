@@ -23,13 +23,13 @@ func _process(delta: float):
 	else:
 		var screen_size: Vector2 = get_viewport_rect().size
 		var laser_half_size: Vector2 = laser_cshape.shape.get_rect().size / 2
-		if (global_position.y + laser_half_size.y) < 0:
+		if (global_position.y + laser_half_size.y) < 0: #UP
 			global_position.y = screen_size.y + laser_half_size.y
-		elif (global_position.y - laser_half_size.y) > screen_size.y:
+		elif (global_position.y - laser_half_size.y) > screen_size.y: #DOWN
 			global_position.y = -laser_half_size.y
-		if (global_position.x + laser_half_size.x) < 0:
+		if (global_position.x + laser_half_size.x) < 0: #LEFT
 			global_position.x = screen_size.x + laser_half_size.x
-		elif (global_position.x - laser_half_size.x) > screen_size.x:
+		elif (global_position.x - laser_half_size.x) > screen_size.x: #RIGHT
 			global_position.x = -laser_half_size.x
 
 func explode_and_free(explosion_scale: float):

@@ -106,11 +106,9 @@ func _on_asteroid_exploded(pos: Vector2, new_rotation: float, size: Asteroid.Ast
 	ui_hud.update()
 	match size:
 		Asteroid.AsteroidSize.MEDIUM:
-			spawn_asteroid(pos, new_rotation + randf_range(0, PI / 4), Asteroid.AsteroidSize.SMALL)
-			spawn_asteroid(pos, new_rotation - randf_range(0, PI / 4), Asteroid.AsteroidSize.SMALL)
+			spawn_twin_asteroids(pos, new_rotation, Asteroid.AsteroidSize.SMALL)
 		Asteroid.AsteroidSize.LARGE:
-			spawn_asteroid(pos, new_rotation + randf_range(0, PI / 4), Asteroid.AsteroidSize.MEDIUM)
-			spawn_asteroid(pos, new_rotation - randf_range(0, PI / 4), Asteroid.AsteroidSize.MEDIUM)
+			spawn_twin_asteroids(pos, new_rotation, Asteroid.AsteroidSize.MEDIUM)
 
 func new_game():
 	pass
@@ -129,12 +127,20 @@ func spawn_large_asteroids():
 		pos_array.push_back(new_pos)
 		spawn_asteroid(new_pos, randf_range(0, 2 * PI), Asteroid.AsteroidSize.LARGE)
 
+func spawn_twin_asteroids(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize):
+	var asteroid1 := AsteroidScene.instantiate()
+	var asteroid2 := AsteroidScene.instantiate()
+	var rotation_offset := randf_range(PI / 8, PI / 4)
+	asteroid1.init(pos, new_rotation + rotation_offset, size, asteroid2.id)
+	asteroid1.connect("exploded", _on_asteroid_exploded)
+	asteroids.call_deferred("add_child", asteroid1)
+	asteroid2.init(pos, new_rotation - rotation_offset, size, asteroid1.id)
+	asteroid2.connect("exploded", _on_asteroid_exploded)
+	asteroids.call_deferred("add_child", asteroid2)
+
 func spawn_asteroid(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize):
 	var asteroid := AsteroidScene.instantiate()
-	asteroid.global_position = pos
-	asteroid.size = size
-	asteroid.move_rotation = new_rotation
-	asteroid.speed_multiplier = Global.asteroid_speed_multiplier
+	asteroid.init(pos, new_rotation, size, -1)
 	asteroid.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid)
 

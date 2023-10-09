@@ -80,13 +80,13 @@ func move(delta: float):
 	velocity = velocity.limit_length(MAX_SPEED).move_toward(Vector2.ZERO, GRAVITY)
 	var screen_size: Vector2 = get_viewport_rect().size
 	var player_half_size: Vector2 = Util.get_poly_rect(cpoly.get_polygon(), scale).size / 2
-	if (global_position.y + player_half_size.y) < 0:
+	if (global_position.y + player_half_size.y) < 0: #UP
 		global_position.y = screen_size.y + player_half_size.y
-	elif (global_position.y - player_half_size.y) > screen_size.y:
+	elif (global_position.y - player_half_size.y) > screen_size.y: #DOWN
 		global_position.y = -player_half_size.y
-	if (global_position.x + player_half_size.x) < 0:
+	if (global_position.x + player_half_size.x) < 0: #LEFT
 		global_position.x = screen_size.x + player_half_size.x
-	elif (global_position.x - player_half_size.x) > screen_size.x:
+	elif (global_position.x - player_half_size.x) > screen_size.x: #RIGHT
 		global_position.x = -player_half_size.x
 
 func shoot():
