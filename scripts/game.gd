@@ -10,10 +10,6 @@ const AsteroidScene: PackedScene = preload("res://scenes/asteroid.tscn")
 @onready var starfield: Starfield = $Starfield
 @onready var player_spawn_pos: Node2D = $PlayerSpawnPos
 @onready var player_spawn_area: PlayerSpawnArea = $PlayerSpawnPos/PlayerSpawnArea
-@onready var laser_audio: AudioStreamPlayer = $Audio/LaserAudio
-@onready var hit_audio: AudioStreamPlayer = $Audio/HitAudio
-@onready var die_audio: AudioStreamPlayer = $Audio/DieAudio
-@onready var thrust_audio: AudioStreamPlayer = $Audio/ThrustAudio
 
 var intro_music_seek: float = 0.0 
 
@@ -27,7 +23,6 @@ func _ready():
 		ui_hud.update()
 		ui_hud.visible = true
 		ui_menu.visible = false
-		player.thrust_audio = thrust_audio
 		player.spawn_pos = player_spawn_pos.global_position
 		player.connect("laser_shoot", _on_player_laser_shoot)
 		player.connect("died", _on_player_died)
@@ -68,17 +63,13 @@ func _on_change_options():
 			if texture_filter != TEXTURE_FILTER_PARENT_NODE:
 				texture_filter = TEXTURE_FILTER_PARENT_NODE
 	starfield.set_starfield()
-	laser_audio.volume_db = Global.sfx_volume_db
-	hit_audio.volume_db = Global.sfx_volume_db
-	die_audio.volume_db = Global.sfx_volume_db
-	thrust_audio.volume_db = Global.sfx_volume_db
 
 func _on_player_laser_shoot(laser: Laser):
-	laser_audio.play()
+	SfxController.play_in_unique_player(SfxController.Sfx.LASER, player.get_instance_id())
 	lasers.add_child(laser)
 
 func _on_player_died():
-	die_audio.play()
+	SfxController.play(SfxController.Sfx.DIE)
 	Global.lives -= 1
 	ui_hud.update()
 	if Global.lives > 0:
@@ -101,7 +92,7 @@ func _on_player_died():
 		ui_menu.show_menu(ui_menu.MenuFace.GAMEOVER)
 
 func _on_asteroid_exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int):
-	hit_audio.play()
+	SfxController.play_in_unique_player(SfxController.Sfx.HIT)
 	Global.score += points
 	ui_hud.update()
 	match size:
@@ -131,16 +122,18 @@ func spawn_twin_asteroids(pos: Vector2, new_rotation: float, size: Asteroid.Aste
 	var asteroid1 := AsteroidScene.instantiate()
 	var asteroid2 := AsteroidScene.instantiate()
 	var rotation_offset := randf_range(PI / 8, PI / 4)
-	asteroid1.init(pos, new_rotation + rotation_offset, size, asteroid2.id)
+	asteroid1.init(pos, new_rotation + rotation_offset, size)
+	asteroid1.paired_ids.push_back(asteroid2.id)
 	asteroid1.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid1)
-	asteroid2.init(pos, new_rotation - rotation_offset, size, asteroid1.id)
+	asteroid2.init(pos, new_rotation - rotation_offset, size)
+	asteroid2.paired_ids.push_back(asteroid1.id)
 	asteroid2.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid2)
 
 func spawn_asteroid(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize):
 	var asteroid := AsteroidScene.instantiate()
-	asteroid.init(pos, new_rotation, size, -1)
+	asteroid.init(pos, new_rotation, size)
 	asteroid.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid)
 

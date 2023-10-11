@@ -13,8 +13,7 @@ script = ExtResource("1_j7m0b")
 texture = ExtResource("2_usxxr")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(5, -6)
-rotation = -0.837758
+position = Vector2(0, -4)
 shape = ExtResource("3_h5hdf")
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]

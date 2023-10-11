@@ -1,6 +1,6 @@
 class_name UIMenu extends Control
 
-enum MenuFace{MAIN, PAUSE, GAMEOVER}
+enum MenuFace {MAIN, PAUSE, GAMEOVER}
 
 signal change_options()
 
@@ -46,6 +46,7 @@ func _on_game_button_pressed():
 			MusicController.stop_music_immediate(false)
 			get_tree().reload_current_scene()
 	visible = false
+	Global.game_menu = false
 
 func _on_options_button_pressed():
 	main_menu.visible = false
@@ -125,3 +126,4 @@ func show_menu(new_face: MenuFace):
 			difficulty_options.disabled = false
 	face = new_face
 	visible = true
+	Global.game_menu = true

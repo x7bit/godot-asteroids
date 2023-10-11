@@ -19,13 +19,18 @@ config/icon="res://icon.svg"
 
 Global="*res://autoloads/global.gd"
 Util="*res://autoloads/util.gd"
-MusicController="*res://autoloads/music_controller.tscn"
+SfxController="*res://autoloads/sfx_controller.gd"
+MusicController="*res://autoloads/music_controller.gd"
 
 [display]
 
 window/size/viewport_width=1280
 window/size/viewport_height=720
 window/stretch/mode="canvas_items"
+
+[filesystem]
+
+import/blender/enabled=false
 
 [input]
 

@@ -29,10 +29,6 @@ var muzzle_idx := 0
 var thrust_forward := false
 var thrust_alfa := 0.0
 
-var thrust_audio: AudioStreamPlayer:
-	set(value):
-		thrust_audio = value
-
 func _ready():
 	thrust_forward = false
 	thrust_alfa = 0.0
@@ -51,13 +47,13 @@ func _process(delta: float):
 		await get_tree().create_timer(RATE_OF_LASER).timeout
 		laser_cooldown = false
 	if thrust_forward:
-		if !thrust_audio.playing: thrust_audio.play()
+		SfxController.play_in_unique_player(SfxController.Sfx.THRUST, get_instance_id())
 		if thrust_alfa < 1.0:
 			thrust_alfa = minf(thrust_alfa + (2.14 * delta), 1.0)
 			thrusts[0].modulate.a = thrust_alfa
 			thrusts[1].modulate.a = thrust_alfa
 	else:
-		if thrust_audio.playing: thrust_audio.stop()
+		SfxController.stop_in_unique_player(SfxController.Sfx.THRUST, get_instance_id())
 		if thrust_alfa > 0.0:
 			thrust_alfa = maxf(thrust_alfa - (3.57 * delta), 0.0)
 			thrusts[0].modulate.a = thrust_alfa
@@ -102,7 +98,7 @@ func die():
 		alive = false
 		velocity = Vector2.ZERO
 		rotation = 0
-		if thrust_audio.playing: thrust_audio.stop()
+		SfxController.stop_in_unique_player(SfxController.Sfx.THRUST, get_instance_id())
 		thrust_forward = false
 		thrust_alfa = 0.0
 		thrusts[0].modulate.a = thrust_alfa

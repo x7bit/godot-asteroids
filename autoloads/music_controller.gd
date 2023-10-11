@@ -1,8 +1,8 @@
 extends Node
 
-enum Type{INTRO, GAME}
-enum Command{PlAY, STOP}
-enum Playing{INTRO, GAME, NONE}
+enum Type {INTRO, GAME}
+enum Command {PlAY, STOP}
+enum Playing {INTRO, GAME, NONE}
 
 const INTRO_URL: String = "res://assets/audio/music/intro_music.ogg"
 const GAME_URLS: Array[String] = [
@@ -10,7 +10,7 @@ const GAME_URLS: Array[String] = [
 	"res://assets/audio/music/game2_music.ogg"
 ]
 
-@onready var music: AudioStreamPlayer = $MusicStreamPlayer
+@onready var music: AudioStreamPlayer
 
 var game_index: int = 0
 var game_count: Array[int] = [0, 0]
@@ -22,6 +22,8 @@ var fading: bool = false
 
 func _ready():
 	process_mode = Node.PROCESS_MODE_ALWAYS
+	music = AudioStreamPlayer.new()
+	add_child(music)
 	game_index = randi_range(0, game_count.size() - 1)
 
 func _process(delta: float):

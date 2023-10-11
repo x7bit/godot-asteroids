@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://b7vrsbwevt2xy"]
+[gd_scene load_steps=8 format=3 uid="uid://b7vrsbwevt2xy"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_6xe2l"]
 [ext_resource type="PackedScene" uid="uid://c3jhgad74myma" path="res://scenes/player.tscn" id="1_h6fhk"]
@@ -6,11 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://ymtwbpsn7q6" path="res://scenes/hud.tscn" id="2_yvwfo"]
 [ext_resource type="PackedScene" uid="uid://chk7xkp2mqp7v" path="res://scenes/menu.tscn" id="3_arl21"]
 [ext_resource type="PackedScene" uid="uid://dtapedwf5bfad" path="res://scenes/player_spawn_area.tscn" id="7_scvdi"]
-[ext_resource type="AudioStream" uid="uid://blnxtqu68b8wn" path="res://assets/audio/blaster.ogg" id="8_dcw8u"]
-[ext_resource type="AudioStream" uid="uid://cdnde76rk1o2g" path="res://assets/audio/hit.ogg" id="8_phj4e"]
-[ext_resource type="AudioStream" uid="uid://b2aa3lhc6m3w1" path="res://assets/audio/explosion.ogg" id="9_6jbgk"]
 [ext_resource type="Script" path="res://scripts/starfield.gd" id="9_601ti"]
-[ext_resource type="AudioStream" uid="uid://bukbd1ir5nltn" path="res://assets/audio/thrust.ogg" id="10_6c6c1"]
 
 [node name="Game" type="Node2D"]
 position = Vector2(1, 0)
@@ -35,20 +31,6 @@ script = ExtResource("2_w0sip")
 position = Vector2(640, 360)
 
 [node name="PlayerSpawnArea" parent="PlayerSpawnPos" instance=ExtResource("7_scvdi")]
-
-[node name="Audio" type="Node" parent="."]
-
-[node name="LaserAudio" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("8_dcw8u")
-
-[node name="HitAudio" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("8_phj4e")
-
-[node name="DieAudio" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("9_6jbgk")
-
-[node name="ThrustAudio" type="AudioStreamPlayer" parent="Audio"]
-stream = ExtResource("10_6c6c1")
 
 [node name="Starfield" type="Node2D" parent="."]
 script = ExtResource("9_601ti")

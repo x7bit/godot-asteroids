@@ -1,6 +1,6 @@
 class_name Asteroid extends Area2D
 
-enum AsteroidSize{SMALL, MEDIUM, LARGE}
+enum AsteroidSize {SMALL, MEDIUM, LARGE}
 
 signal exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int)
 
@@ -11,11 +11,12 @@ const BASE_SPEED: float = 50.0
 
 @export var size: AsteroidSize = AsteroidSize.LARGE
 var center_offset: Vector2 = Vector2.ZERO
+var move_rotation: float = 0.0
 var speed: float = BASE_SPEED
 var speed_multiplier: float = 1.0
-var move_rotation: float = 0.0
 var alfa: float = 1.0
-var twin_id: int = -1
+var is_bounced: bool = false
+var paired_ids: Array[int] = []
 
 var id: int:
 	get:
@@ -56,16 +57,19 @@ func _ready():
 			speed = randf_range(speed_multiplier * 2.5 * BASE_SPEED, speed_multiplier * 3.5 * BASE_SPEED)
 			sprite.texture = preload("res://assets/textures/asteroid_small.png")
 			cshape.shape = preload("res://resources/asteroid_cshape_small.tres")
+			cshape.position = Vector2(1, -1)
 		AsteroidSize.MEDIUM:
 			speed = randf_range(speed_multiplier * 1.5 * BASE_SPEED, speed_multiplier * 2.5 * BASE_SPEED)
 			sprite.texture = preload("res://assets/textures/asteroid_medium.png")
 			cshape.shape = preload("res://resources/asteroid_cshape_medium.tres")
+			cshape.position = Vector2.ZERO
 		AsteroidSize.LARGE:
 			alfa = 0.0
 			speed = randf_range(speed_multiplier * BASE_SPEED, speed_multiplier * 1.5 * BASE_SPEED)
 			sprite.modulate.a = alfa
 			sprite.texture = preload("res://assets/textures/asteroid_large.png")
 			cshape.shape = preload("res://resources/asteroid_cshape_large.tres")
+			cshape.position = Vector2(0, -4)
 	center_offset = cshape.position.rotated(rotation)
 
 func _process(delta: float):
@@ -84,29 +88,28 @@ func _process(delta: float):
 		elif (global_position.x - radius) > screen_size.x: #RIGHT
 			global_position.x = -radius
 
+func _on_body_entered(body: CharacterBody2D):
+	if body is Player:
+		body.die()
+
 func _on_area_entered(area: Area2D):
 	if area is Laser:
 		if !area.exploded:
 			explode(area)
 			area.explode_and_free(explosion_scale)
 	if area is Asteroid:
-		if size <= area.size && twin_id != area.id:
+		if size <= area.size && !paired_ids.has(area.id):
 			bounce(area)
-
-func _on_body_entered(body: CharacterBody2D):
-	if body is Player:
-		body.die()
 
 func _on_area_exited(area: Area2D):
 	if area is Asteroid:
-		if twin_id == area.id:
-			twin_id = -1
+		if paired_ids.has(area.id):
+			paired_ids.erase(area.id)
 
-func init(_pos: Vector2, _new_rotation: float, _size: Asteroid.AsteroidSize, _twin_id: int):
+func init(_pos: Vector2, _new_rotation: float, _size: Asteroid.AsteroidSize):
 	global_position = _pos
 	size = _size
 	move_rotation = _new_rotation
-	twin_id = _twin_id
 	speed_multiplier = Global.asteroid_speed_multiplier
 
 func explode(laser: Laser):
@@ -118,7 +121,16 @@ func bounce(asteroid: Asteroid):
 	var center_diff_vector: Vector2 = global_center - asteroid.global_center
 	var normal_vector: Vector2 = center_diff_vector.orthogonal().normalized()
 	reflect(normal_vector)
+	asteroid.is_bounced = true
+	if is_bounced:
+		is_bounced = false
+		asteroid.is_bounced = false
+		paired_ids.push_back(asteroid.id)
+		asteroid.paired_ids.push_back(id)
+	else:
+		SfxController.play_in_unique_player(SfxController.Sfx.BOUNCE)
 
 func reflect(normal_vector: Vector2):
 	var move_vector := Vector2.UP.rotated(move_rotation)
 	move_rotation = Util.get_rotation_based_up_vector(move_vector.reflect(normal_vector))
+

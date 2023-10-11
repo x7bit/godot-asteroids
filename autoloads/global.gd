@@ -2,9 +2,9 @@ extends Node
 
 const CONFIG_FILE := "user://asteroids.cfg"
 
-enum WindowMode{WINDOW, FULLSCREEN}
-enum Detail{LOW, MEDIUM, HIGH}
-enum Difficulty{EASY, NORMAL, HARD}
+enum WindowMode {WINDOW, FULLSCREEN}
+enum Detail {LOW, MEDIUM, HIGH}
+enum Difficulty {EASY, NORMAL, HARD}
 
 var window_mode := WindowMode.WINDOW
 var difficulty := Difficulty.NORMAL
@@ -17,6 +17,7 @@ var lives: int = 3
 var score: int = 0
 var game_round: int = 0
 var game_started: bool = false
+var game_menu: bool = true
 var next_round_pause: bool = false
 var high_scores = { Difficulty.EASY: 0, Difficulty.NORMAL: 0, Difficulty.HARD: 0 }
 
