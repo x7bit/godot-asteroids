@@ -1,6 +1,7 @@
 class_name Player extends CharacterBody2D
 
 signal laser_shoot(laser: Laser)
+signal poweruped(type: PowerUp.Type)
 signal died()
 
 const ROTATION_SPEED := 140.0
@@ -22,6 +23,12 @@ const LaserScene: PackedScene = preload("res://scenes/laser.tscn")
 	$DieParticles/ExplosionParticles
 ]
 
+var rotation_speed := ROTATION_SPEED
+var max_speed := MAX_SPEED
+var acceleration := ACCELERATION
+var deceleration := DECELERATION
+var rate_of_laser := RATE_OF_LASER
+
 var alive := true
 var spawn_pos := Vector2.ZERO
 var laser_cooldown := false
@@ -29,13 +36,13 @@ var muzzle_idx := 0
 var thrust_forward := false
 var thrust_alfa := 0.0
 
-func _ready():
+func _ready() -> void:
 	thrust_forward = false
 	thrust_alfa = 0.0
 	thrusts[0].modulate.a = thrust_alfa
 	thrusts[1].modulate.a = thrust_alfa
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	if !alive || !Global.game_started: return
 	if Input.is_action_just_pressed("move_forward"):
 		thrust_forward = true
@@ -44,7 +51,7 @@ func _process(delta: float):
 	if Input.is_action_pressed("shoot") && !laser_cooldown && !Global.next_round_pause:
 		laser_cooldown = true
 		shoot()
-		await get_tree().create_timer(RATE_OF_LASER).timeout
+		await get_tree().create_timer(rate_of_laser).timeout
 		laser_cooldown = false
 	if thrust_forward:
 		SfxController.play_in_unique_player(SfxController.Sfx.THRUST, get_instance_id())
@@ -59,21 +66,21 @@ func _process(delta: float):
 			thrusts[0].modulate.a = thrust_alfa
 			thrusts[1].modulate.a = thrust_alfa
 
-func _physics_process(delta: float):
+func _physics_process(delta: float) -> void:
 	if !alive || !Global.game_started: return
 	move(delta)
 	move_and_slide()
 
-func move(delta: float):
+func move(delta: float) -> void:
 	if Input.is_action_pressed("move_forward"):
-		velocity += Vector2(0, -ACCELERATION).rotated(rotation)
+		velocity += Vector2(0, -acceleration).rotated(rotation)
 	if Input.is_action_pressed("move_backward"):
-		velocity += Vector2(0, DECELERATION).rotated(rotation)
+		velocity += Vector2(0, deceleration).rotated(rotation)
 	if Input.is_action_pressed("rotate_left"):
-		rotate(deg_to_rad(-ROTATION_SPEED * delta))
+		rotate(deg_to_rad(-rotation_speed * delta))
 	if Input.is_action_pressed("rotate_right"):
-		rotate(deg_to_rad(ROTATION_SPEED * delta))
-	velocity = velocity.limit_length(MAX_SPEED).move_toward(Vector2.ZERO, GRAVITY)
+		rotate(deg_to_rad(rotation_speed * delta))
+	velocity = velocity.limit_length(max_speed).move_toward(Vector2.ZERO, GRAVITY)
 	var screen_size: Vector2 = get_viewport_rect().size
 	var player_half_size: Vector2 = Util.get_poly_rect(cpoly.get_polygon(), scale).size / 2
 	if (global_position.y + player_half_size.y) < 0: #UP
@@ -85,7 +92,7 @@ func move(delta: float):
 	elif (global_position.x - player_half_size.x) > screen_size.x: #RIGHT
 		global_position.x = -player_half_size.x
 
-func shoot():
+func shoot() -> void:
 	var muzzle: Node2D = muzzles[muzzle_idx]
 	var laser := LaserScene.instantiate()
 	laser.global_position = muzzle.global_position
@@ -93,7 +100,7 @@ func shoot():
 	emit_signal("laser_shoot", laser)
 	muzzle_idx = (muzzle_idx + 1) % 2
 
-func die():
+func die() -> void:
 	if alive:
 		alive = false
 		velocity = Vector2.ZERO
@@ -111,11 +118,23 @@ func die():
 			die_particles[i].emitting = true
 		emit_signal("died")
 
-func pre_respawn():
+func powerup(type: PowerUp.Type) -> void:
+	match type:
+		PowerUp.Type.LASER:
+			rate_of_laser *= 0.85
+		PowerUp.Type.TURN:
+			rotation_speed *= 1.15
+		PowerUp.Type.SPEED:
+			max_speed *= 1.15
+			acceleration *= 1.15
+			deceleration *= 1.15
+	emit_signal("poweruped", type)
+
+func pre_respawn() -> void:
 	if !alive:
 		ship_sprite.modulate.a = 0.3
 
-func respawn():
+func respawn() -> void:
 	if !alive:
 		alive = true
 		ship_sprite.modulate.a = 1.0

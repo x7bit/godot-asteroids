@@ -1,6 +1,7 @@
 extends Node
 
 const CONFIG_FILE := "user://asteroids.cfg"
+const POWERUP_POINTS := 3000
 
 enum WindowMode {WINDOW, FULLSCREEN}
 enum Detail {LOW, MEDIUM, HIGH}
@@ -13,13 +14,14 @@ var sfx_volume: float = 1.0
 var sfx_volume_db: float = 0.0
 var music_volume: float = 0.8
 var music_volume_db: float = linear_to_db(0.8)
+var high_scores = { Difficulty.EASY: 0, Difficulty.NORMAL: 0, Difficulty.HARD: 0 }
 var lives: int = 3
 var score: int = 0
 var game_round: int = 0
 var game_started: bool = false
 var game_menu: bool = true
 var next_round_pause: bool = false
-var high_scores = { Difficulty.EASY: 0, Difficulty.NORMAL: 0, Difficulty.HARD: 0 }
+var last_powerup: PowerUp.Type = PowerUp.Type.SPEED
 
 var high_score: int:
 	get:
@@ -51,13 +53,13 @@ var game_round_label: String:
 	get:
 		return "ROUND: " + str(game_round + 1)
 
-func init():
+func init() -> void:
 	lives = 3
 	score = 0
 	game_round = 0
 	load_config()
 
-func load_config():
+func load_config() -> void:
 	var config = ConfigFile.new()
 	var err = config.load(CONFIG_FILE)
 	if err != OK:
@@ -84,7 +86,7 @@ func load_config():
 		high_scores[Difficulty.NORMAL] = config.get_value("highscore", "normal", 0)
 		high_scores[Difficulty.HARD] = config.get_value("highscore", "hard", 0)
 
-func save_config():
+func save_config() -> void:
 	var config = ConfigFile.new()
 	config.set_value("options", "window_mode", window_mode)
 	config.set_value("options", "difficulty", difficulty)

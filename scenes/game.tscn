@@ -25,6 +25,8 @@ script = ExtResource("2_w0sip")
 
 [node name="Lasers" type="Node2D" parent="."]
 
+[node name="PowerUps" type="Node2D" parent="."]
+
 [node name="Asteroids" type="Node2D" parent="."]
 
 [node name="PlayerSpawnPos" type="Node2D" parent="."]
@@ -34,3 +36,8 @@ position = Vector2(640, 360)
 
 [node name="Starfield" type="Node2D" parent="."]
 script = ExtResource("9_601ti")
+
+[connection signal="change_options" from="UI/Menu" to="." method="_on_menu_change_options"]
+[connection signal="died" from="Player" to="." method="_on_player_died"]
+[connection signal="laser_shoot" from="Player" to="." method="_on_player_laser_shoot"]
+[connection signal="poweruped" from="Player" to="." method="_on_player_poweruped"]

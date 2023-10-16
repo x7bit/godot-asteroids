@@ -50,7 +50,7 @@ var mass_multiplier: float:
 	get:
 		return pow(2, size) * 2
 
-func _ready():
+func _ready() -> void:
 	rotation = randf_range(0, 2 * PI)
 	match size:
 		AsteroidSize.SMALL:
@@ -72,7 +72,7 @@ func _ready():
 			cshape.position = Vector2(0, -4)
 	center_offset = cshape.position.rotated(rotation)
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	if alfa < 1.0:
 		alfa = minf(alfa + 1.5 * delta, 1.0)
 		sprite.modulate.a = alfa
@@ -88,11 +88,11 @@ func _process(delta: float):
 		elif (global_position.x - radius) > screen_size.x: #RIGHT
 			global_position.x = -radius
 
-func _on_body_entered(body: CharacterBody2D):
+func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
 		body.die()
 
-func _on_area_entered(area: Area2D):
+func _on_area_entered(area: Area2D) -> void:
 	if area is Laser:
 		if !area.exploded:
 			explode(area)
@@ -101,23 +101,23 @@ func _on_area_entered(area: Area2D):
 		if size <= area.size && !paired_ids.has(area.id):
 			bounce(area)
 
-func _on_area_exited(area: Area2D):
+func _on_area_exited(area: Area2D) -> void:
 	if area is Asteroid:
 		if paired_ids.has(area.id):
 			paired_ids.erase(area.id)
 
-func init(_pos: Vector2, _new_rotation: float, _size: Asteroid.AsteroidSize):
+func init(_pos: Vector2, _new_rotation: float, _size: Asteroid.AsteroidSize) -> void:
 	global_position = _pos
 	size = _size
 	move_rotation = _new_rotation
 	speed_multiplier = Global.asteroid_speed_multiplier
 
-func explode(laser: Laser):
+func explode(laser: Laser) -> void:
 	var new_rotation = Util.get_explosion_rotation(laser, self)
 	emit_signal("exploded", global_position, new_rotation, size, points)
 	queue_free()
 
-func bounce(asteroid: Asteroid):
+func bounce(asteroid: Asteroid) -> void:
 	var center_diff_vector: Vector2 = global_center - asteroid.global_center
 	var normal_vector: Vector2 = center_diff_vector.orthogonal().normalized()
 	reflect(normal_vector)
@@ -130,7 +130,7 @@ func bounce(asteroid: Asteroid):
 	else:
 		SfxController.play_in_unique_player(SfxController.Sfx.BOUNCE)
 
-func reflect(normal_vector: Vector2):
+func reflect(normal_vector: Vector2) -> void:
 	var move_vector := Vector2.UP.rotated(move_rotation)
 	move_rotation = Util.get_rotation_based_up_vector(move_vector.reflect(normal_vector))
 

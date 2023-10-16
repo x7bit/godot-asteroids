@@ -4,13 +4,13 @@ const StarfieldBackScene: PackedScene = preload("res://scenes/starfield_back.tsc
 const StarfieldMiddleScene: PackedScene = preload("res://scenes/starfield_middle.tscn")
 const StarfieldFrontScene: PackedScene = preload("res://scenes/starfield_front.tscn")
 
-func _ready():
+func _ready() -> void:
 	pass
 
-func _process(_delta: float):
+func _process(_delta: float) -> void:
 	pass
 
-func set_starfield():
+func set_starfield() -> void:
 	match Global.detail:
 		Global.Detail.LOW:
 			match get_children().size():

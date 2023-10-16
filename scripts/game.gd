@@ -1,11 +1,13 @@
 extends Node2D
 
+const PowerupScene: PackedScene = preload("res://scenes/power_up.tscn")
 const AsteroidScene: PackedScene = preload("res://scenes/asteroid.tscn")
 
 @onready var ui_hud: UIHud = $UI/HUD
 @onready var ui_menu: UIMenu = $UI/Menu
 @onready var player: Player = $Player
 @onready var lasers: Node2D = $Lasers
+@onready var powerups: Node2D = $PowerUps
 @onready var asteroids: Node2D = $Asteroids
 @onready var starfield: Starfield = $Starfield
 @onready var player_spawn_pos: Node2D = $PlayerSpawnPos
@@ -13,19 +15,16 @@ const AsteroidScene: PackedScene = preload("res://scenes/asteroid.tscn")
 
 var intro_music_seek: float = 0.0 
 
-func _ready():
+func _ready() -> void:
 	Global.init()
 	starfield.set_starfield()
 	ui_menu.update()
-	ui_menu.connect("change_options", _on_change_options)
-	_on_change_options()
+	_on_menu_change_options()
 	if Global.game_started:
 		ui_hud.update()
 		ui_hud.visible = true
 		ui_menu.visible = false
 		player.spawn_pos = player_spawn_pos.global_position
-		player.connect("laser_shoot", _on_player_laser_shoot)
-		player.connect("died", _on_player_died)
 		next_round(true)
 		MusicController.set_new_game_music()
 		MusicController.play_music_immediate(MusicController.Type.GAME, false, false)
@@ -35,7 +34,7 @@ func _ready():
 		ui_menu.show_menu(ui_menu.MenuFace.MAIN)
 		MusicController.play_music_immediate(MusicController.Type.INTRO, false, false)
 
-func _process(_delta: float):
+func _process(_delta: float) -> void:
 	if Input.is_action_pressed("pause") && Global.lives > 0:
 		get_tree().paused = true
 		ui_menu.show_menu(ui_menu.MenuFace.PAUSE)
@@ -44,7 +43,7 @@ func _process(_delta: float):
 	if Global.game_started && asteroids.get_children().size() == 0:
 		next_round(false)
 
-func _on_change_options():
+func _on_menu_change_options() -> void:
 	match Global.window_mode:
 		Global.WindowMode.WINDOW:
 			if get_tree().get_root().mode != Window.MODE_WINDOWED:
@@ -64,11 +63,22 @@ func _on_change_options():
 				texture_filter = TEXTURE_FILTER_PARENT_NODE
 	starfield.set_starfield()
 
-func _on_player_laser_shoot(laser: Laser):
+func _on_player_laser_shoot(laser: Laser) -> void:
 	SfxController.play_in_unique_player(SfxController.Sfx.LASER, player.get_instance_id())
 	lasers.add_child(laser)
 
-func _on_player_died():
+func _on_player_poweruped(type: PowerUp.Type) -> void:
+	match type:
+		PowerUp.Type.LASER:
+			ui_hud.show_tip("Increased rate of fire", Color(0.6, 1.0, 0.6))
+		PowerUp.Type.TURN:
+			ui_hud.show_tip("Increased turning speed", Color(1.0, 0.6, 0.6))
+		PowerUp.Type.SPEED:
+			ui_hud.show_tip("Increased thrust power", Color(0.3, 0.7, 1.0))
+	await get_tree().create_timer(1.5).timeout
+	ui_hud.hide_tip()
+
+func _on_player_died() -> void:
 	SfxController.play(SfxController.Sfx.DIE)
 	Global.lives -= 1
 	ui_hud.update()
@@ -91,9 +101,9 @@ func _on_player_died():
 		MusicController.play_music(MusicController.Type.INTRO, true, true)
 		ui_menu.show_menu(ui_menu.MenuFace.GAMEOVER)
 
-func _on_asteroid_exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int):
+func _on_asteroid_exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int) -> void:
 	SfxController.play_in_unique_player(SfxController.Sfx.HIT)
-	Global.score += points
+	add_score(points)
 	ui_hud.update()
 	match size:
 		Asteroid.AsteroidSize.MEDIUM:
@@ -101,10 +111,14 @@ func _on_asteroid_exploded(pos: Vector2, new_rotation: float, size: Asteroid.Ast
 		Asteroid.AsteroidSize.LARGE:
 			spawn_twin_asteroids(pos, new_rotation, Asteroid.AsteroidSize.MEDIUM)
 
-func new_game():
-	pass
+func add_score(points: int) -> void:
+	var new_score := Global.score + points
+	var powerup_diff := Global.score % Global.POWERUP_POINTS - new_score % Global.POWERUP_POINTS
+	Global.score = new_score
+	if powerup_diff > 0:
+		spawn_powerup()
 
-func spawn_large_asteroids():
+func spawn_large_asteroids() -> void:
 	var player_pos: Vector2 = player.global_position
 	var screen_size: Vector2 = get_viewport_rect().size
 	var pos_array: Array[Vector2] = [Vector2(player_pos)]
@@ -118,7 +132,7 @@ func spawn_large_asteroids():
 		pos_array.push_back(new_pos)
 		spawn_asteroid(new_pos, randf_range(0, 2 * PI), Asteroid.AsteroidSize.LARGE)
 
-func spawn_twin_asteroids(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize):
+func spawn_twin_asteroids(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize) -> void:
 	var asteroid1 := AsteroidScene.instantiate()
 	var asteroid2 := AsteroidScene.instantiate()
 	var rotation_offset := randf_range(PI / 8, PI / 4)
@@ -131,13 +145,26 @@ func spawn_twin_asteroids(pos: Vector2, new_rotation: float, size: Asteroid.Aste
 	asteroid2.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid2)
 
-func spawn_asteroid(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize):
+func spawn_asteroid(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize) -> void:
 	var asteroid := AsteroidScene.instantiate()
 	asteroid.init(pos, new_rotation, size)
 	asteroid.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid)
 
-func next_round(first_round: bool):
+func spawn_powerup() -> void:
+	var player_pos: Vector2 = player.global_position
+	var screen_size: Vector2 = get_viewport_rect().size
+	var powerup_pos = Vector2(randf_range(50, screen_size.x - 50), randf_range(50, screen_size.y - 50))
+	var distance = powerup_pos.distance_squared_to(player_pos)
+	while distance < 40000: #200 non squared
+		powerup_pos.x = randf_range(50, screen_size.x - 50)
+		powerup_pos.y = randf_range(50, screen_size.y - 50)
+		distance = powerup_pos.distance_squared_to(player_pos)
+	var powerup := PowerupScene.instantiate()
+	powerup.init(powerup_pos)
+	powerups.call_deferred("add_child", powerup)
+
+func next_round(first_round: bool) -> void:
 	if !Global.next_round_pause:
 		Global.next_round_pause = true
 		if !first_round: Global.game_round += 1

@@ -20,13 +20,13 @@ var stack: Array[Dictionary] = []
 var playing: Playing = Playing.NONE
 var fading: bool = false
 
-func _ready():
+func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	music = AudioStreamPlayer.new()
 	add_child(music)
 	game_index = randi_range(0, game_count.size() - 1)
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	if stack.size() == 0: return
 	var command = stack[0]["command"]
 	var fade = stack[0]["fade"]

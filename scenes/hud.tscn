@@ -22,7 +22,7 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_748ye")
 
-[node name="Score" type="Label" parent="."]
+[node name="ScoreLabel" type="Label" parent="."]
 layout_mode = 1
 offset_left = 8.0
 offset_top = 8.0
@@ -31,7 +31,7 @@ offset_bottom = 34.0
 text = "SCORE: 0"
 label_settings = SubResource("LabelSettings_jnk86")
 
-[node name="Lives" type="HBoxContainer" parent="."]
+[node name="LivesContainer" type="HBoxContainer" parent="."]
 clip_contents = true
 layout_mode = 1
 offset_left = 8.0
@@ -39,7 +39,7 @@ offset_top = 30.0
 offset_right = 48.0
 offset_bottom = 70.0
 
-[node name="NextRound" type="Control" parent="."]
+[node name="Round" type="Control" parent="."]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -53,7 +53,7 @@ offset_bottom = -140.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Round" type="Label" parent="NextRound"]
+[node name="RoundLabel" type="Label" parent="Round"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -70,7 +70,7 @@ theme_override_fonts/font = ExtResource("2_4wo43")
 theme_override_font_sizes/font_size = 32
 text = "Round: 1"
 
-[node name="GetReady" type="Label" parent="NextRound"]
+[node name="GetReadyLabel" type="Label" parent="Round"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -85,3 +85,28 @@ grow_vertical = 2
 theme_override_fonts/font = ExtResource("2_4wo43")
 theme_override_font_sizes/font_size = 24
 text = "GET READY"
+
+[node name="Tip" type="Control" parent="."]
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="TipLabel" type="Label" parent="Tip"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 550.5
+offset_top = 207.0
+offset_right = 689.5
+offset_bottom = 237.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 0.615686, 0.639216, 1)
+theme_override_colors/font_shadow_color = Color(1, 1, 1, 1)
+theme_override_fonts/font = ExtResource("2_4wo43")
+theme_override_font_sizes/font_size = 24
+text = "TIP"
+horizontal_alignment = 1

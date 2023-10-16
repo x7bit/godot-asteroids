@@ -10,10 +10,10 @@ const RANGE := 600.0
 var exploded := false
 var distance := 0.0
 
-func _ready():
+func _ready() -> void:
 	exploded = false
 
-func _process(delta: float):
+func _process(delta: float) -> void:
 	if exploded: return
 	var frame_distance := SPEED * delta
 	global_position += Vector2.UP.rotated(rotation) * frame_distance
@@ -32,7 +32,7 @@ func _process(delta: float):
 		elif (global_position.x - laser_half_size.x) > screen_size.x: #RIGHT
 			global_position.x = -laser_half_size.x
 
-func explode_and_free(explosion_scale: float):
+func explode_and_free(explosion_scale: float) -> void:
 	exploded = true
 	laser_sprite.visible = false
 	laser_explosion.lifetime *= explosion_scale

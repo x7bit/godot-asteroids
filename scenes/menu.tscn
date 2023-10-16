@@ -422,7 +422,7 @@ text = "BACK"
 [connection signal="pressed" from="MainMenu/MainVBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
 [connection signal="toggled" from="OptionMenu/OptionsVBoxContainer/FullScreenCheckButton" to="." method="_on_full_screen_check_button_toggled"]
 [connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer/DifficultyOptionButton" to="." method="_on_difficulty_option_button_item_selected"]
-[connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton" to="." method="_on_option_button_item_selected"]
+[connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton" to="." method="_on_detail_option_button_item_selected"]
 [connection signal="value_changed" from="OptionMenu/OptionsVBoxContainer/SfxHBoxContainer/SfxHSlider" to="." method="_on_sfx_h_slider_value_changed"]
 [connection signal="value_changed" from="OptionMenu/OptionsVBoxContainer/MusicHBoxContainer/MusicHSlider" to="." method="_on_music_h_slider_value_changed"]
 [connection signal="pressed" from="OptionMenu/OptionsVBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

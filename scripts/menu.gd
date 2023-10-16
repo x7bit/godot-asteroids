@@ -21,17 +21,14 @@ signal change_options()
 
 var face: MenuFace = MenuFace.MAIN
 
-func _ready():
+func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
 	main_menu.visible = true
 	options_menu.visible = false
 	highscore_menu.visible = false
 	credits_menu.visible = false
 
-func _process(_delta: float):
-	pass
-
-func _on_game_button_pressed():
+func _on_game_button_pressed() -> void:
 	match face:
 		MenuFace.MAIN: #NEW GAME
 			Global.game_started = true
@@ -48,59 +45,58 @@ func _on_game_button_pressed():
 	visible = false
 	Global.game_menu = false
 
-func _on_options_button_pressed():
+func _on_options_button_pressed() -> void:
 	main_menu.visible = false
 	options_menu.visible = true
 
-func _on_high_score_button_pressed():
+func _on_high_score_button_pressed() -> void:
 	main_menu.visible = false
 	highscore_menu.visible = true
 
-func _on_credits_button_pressed():
+func _on_credits_button_pressed() -> void:
 	main_menu.visible = false
 	credits_menu.visible = true
 
-func _on_exit_button_pressed():
+func _on_exit_button_pressed() -> void:
 	get_tree().quit()
 
-func _on_full_screen_check_button_toggled(button_pressed):
+func _on_full_screen_check_button_toggled(button_pressed) -> void:
 	Global.window_mode = Global.WindowMode.FULLSCREEN if button_pressed else Global.WindowMode.WINDOW
 	emit_signal("change_options")
 
-func _on_difficulty_option_button_item_selected(index):
+func _on_difficulty_option_button_item_selected(index) -> void:
 	Global.difficulty = index
 
-func _on_option_button_item_selected(index):
+func _on_detail_option_button_item_selected(index) -> void:
 	Global.detail = index
 	emit_signal("change_options")
 
-func _on_sfx_h_slider_value_changed(value):
+func _on_sfx_h_slider_value_changed(value) -> void:
 	Global.sfx_volume = value
 	Global.sfx_volume_db = Util.volume_to_db(value)
-	emit_signal("change_options")
 
-func _on_music_h_slider_value_changed(value):
+func _on_music_h_slider_value_changed(value) -> void:
 	Global.music_volume = value
 	Global.music_volume_db = Util.volume_to_db(value)
 	MusicController.music.volume_db = Global.music_volume_db
 
-func _on_code_button_pressed():
+func _on_code_button_pressed() -> void:
 	OS.shell_open("https://github.com/x7bit")
 
-func _on_music_button_pressed():
+func _on_music_button_pressed() -> void:
 	OS.shell_open("https://whitebataudio.com/")
 
-func _on_thanks_button_pressed():
+func _on_thanks_button_pressed() -> void:
 	OS.shell_open("https://www.youtube.com/@KaanAlpar")
 
-func _on_back_button_pressed():
+func _on_back_button_pressed() -> void:
 	if options_menu.visible: Global.save_config()
 	main_menu.visible = true
 	options_menu.visible = false
 	highscore_menu.visible = false
 	credits_menu.visible = false
 
-func update():
+func update() -> void:
 	fullscreen_check.button_pressed = Global.window_mode == Global.WindowMode.FULLSCREEN
 	difficulty_options.selected = Global.difficulty
 	detail_options.selected = Global.detail
@@ -110,7 +106,7 @@ func update():
 	normal_score.text = str(Global.high_scores[Global.Difficulty.NORMAL])
 	hard_score.text = str(Global.high_scores[Global.Difficulty.HARD])
 
-func show_menu(new_face: MenuFace):
+func show_menu(new_face: MenuFace) -> void:
 	match new_face:
 		MenuFace.MAIN:
 			title_label.text = "ASTEROIDS"

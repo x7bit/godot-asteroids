@@ -1,0 +1,68 @@
+[gd_scene load_steps=13 format=3 uid="uid://kfs3y8oqemme"]
+
+[ext_resource type="Script" path="res://scripts/power_up.gd" id="1_gf28v"]
+[ext_resource type="SpriteFrames" uid="uid://5ht7bah86cfo" path="res://resources/orb_red_sprite_frames.tres" id="2_hnfoy"]
+[ext_resource type="Texture2D" uid="uid://cutwv70pxoghv" path="res://assets/textures/vortex.png" id="3_lr80h"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rc340"]
+radius = 23.0
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_iwixt"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_5aare"]
+offsets = PackedFloat32Array(0.237037, 0.474074, 0.762963)
+colors = PackedColorArray(0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_58ewa"]
+gradient = SubResource("Gradient_5aare")
+
+[sub_resource type="Curve" id="Curve_8nqjx"]
+min_value = -1.0
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(1, -0.368421), -4.0539, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_4fisn"]
+curve = SubResource("Curve_8nqjx")
+
+[sub_resource type="Curve" id="Curve_3afap"]
+_data = [Vector2(0, 0.747368), 0.0, 0.0, 0, 0, Vector2(1, 0.305263), -1.0146, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_mi76d"]
+curve = SubResource("Curve_3afap")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_71cqu"]
+particle_flag_disable_z = true
+gravity = Vector3(0, 0, 0)
+angular_velocity_min = -100.0
+angular_velocity_max = -100.0
+orbit_velocity_min = 0.0
+orbit_velocity_max = 0.0
+angle_min = 355.0
+angle_max = 365.0
+scale_curve = SubResource("CurveTexture_mi76d")
+color_ramp = SubResource("GradientTexture1D_58ewa")
+hue_variation_min = -0.02
+hue_variation_max = 0.04
+hue_variation_curve = SubResource("CurveTexture_4fisn")
+
+[node name="PowerUp" type="Area2D"]
+collision_mask = 10
+script = ExtResource("1_gf28v")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+scale = Vector2(0.3, 0.3)
+sprite_frames = ExtResource("2_hnfoy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_rc340")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="."]
+material = SubResource("CanvasItemMaterial_iwixt")
+amount = 4
+process_material = SubResource("ParticleProcessMaterial_71cqu")
+texture = ExtResource("3_lr80h")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

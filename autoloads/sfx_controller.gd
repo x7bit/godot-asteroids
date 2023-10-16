@@ -1,6 +1,6 @@
 extends Node
 
-enum Sfx {LASER, HIT, BOUNCE, DIE, THRUST}
+enum Sfx {LASER, HIT, BOUNCE, DIE, THRUST, POWERUP}
 enum Mode {PLAY, STOP}
 
 const AUDIOS = {
@@ -9,6 +9,7 @@ const AUDIOS = {
 	Sfx.BOUNCE: preload("res://assets/audio/bounce.ogg"),
 	Sfx.DIE: preload("res://assets/audio/explosion.ogg"),
 	Sfx.THRUST: preload("res://assets/audio/thrust.ogg"),
+	Sfx.POWERUP: preload("res://assets/audio/powerup.ogg")
 }
 const MAX_POOL_SIZE := 12
 
@@ -16,13 +17,13 @@ var used_player_pool: Array[SfxStreamPlayer] = []
 var free_player_pool: Array[SfxStreamPlayer] = []
 var player_idx: int = 0 #for when there are no free audios
 
-func _ready():
+func _ready() -> void:
 	for i in MAX_POOL_SIZE:
 		var player := SfxStreamPlayer.new()
 		add_child(player)
 		free_player_pool.push_back(player)
 
-func _process(_delta: float):
+func _process(_delta: float) -> void:
 	var playing_players: Array[SfxStreamPlayer] = []
 	var not_playing_players: Array[SfxStreamPlayer] = []
 	for player in used_player_pool:
@@ -33,7 +34,7 @@ func _process(_delta: float):
 	used_player_pool = playing_players
 	free_player_pool += not_playing_players
 
-func play(sfx: Sfx, id: int = -1):
+func play(sfx: Sfx, id: int = -1) -> void:
 	if Global.game_menu: return
 	var is_loop = _is_loop(sfx)
 	var player = _get_player(Mode.PLAY, sfx, id, is_loop)
@@ -53,7 +54,7 @@ func play_in_unique_player(sfx: Sfx, id: int = -1) -> void:
 	else:
 		player.play()
 
-func stop_in_unique_player(sfx: Sfx, id: int = -1):
+func stop_in_unique_player(sfx: Sfx, id: int = -1) -> void:
 	if Global.game_menu: return
 	var is_loop = _is_loop(sfx)
 	var player = _get_player_in_unique_player(Mode.STOP, sfx, id, is_loop)

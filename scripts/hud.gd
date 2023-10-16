@@ -2,18 +2,21 @@ class_name UIHud extends Control
 
 var LifeScene: PackedScene = preload("res://scenes/life.tscn")
 
-@onready var score_label: Label = $Score
-@onready var lives_container: BoxContainer = $Lives
-@onready var next_round: Control = $NextRound
-@onready var round_label: Label = $NextRound/Round
+@onready var score_label: Label = $ScoreLabel
+@onready var lives_container: BoxContainer = $LivesContainer
+@onready var round_control: Control = $Round
+@onready var round_label: Label = $Round/RoundLabel
+@onready var tip_control: Control = $Tip
+@onready var tip_label: Label = $Tip/TipLabel
 
-func _ready():
-	next_round.visible = false
+func _ready() -> void:
+	round_control.visible = false
+	tip_control.visible = false
 
-func _process(_delta: float):
+func _process(_delta: float) -> void:
 	pass
 
-func update():
+func update() -> void:
 	score_label.text = "SCORE: " + str(Global.score)
 	var lives_diff := Global.lives - lives_container.get_children().size()
 	if lives_diff != 0:
@@ -24,9 +27,18 @@ func update():
 			for i in -lives_diff:
 				lives_container.get_children()[-i-1].queue_free()
 
-func show_round():
+func show_round() -> void:
 	round_label.text = Global.game_round_label
-	next_round.visible = true
+	round_control.visible = true
+	tip_control.visible = false
 
-func hide_round():
-	next_round.visible = false
+func hide_round() -> void:
+	round_control.visible = false
+
+func show_tip(text: String, color: Color) -> void:
+	tip_label.text = text
+	tip_label.set("theme_override_colors/font_color", color)
+	tip_control.visible = true
+
+func hide_tip() -> void:
+	tip_control.visible = false
