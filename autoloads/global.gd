@@ -33,11 +33,11 @@ var asteroid_speed_multiplier: float:
 	get:
 		match difficulty:
 			Difficulty.EASY:
-				return game_round * 0.1 + 0.8
+				return game_round * 0.075 + 0.8
 			Difficulty.HARD:
-				return game_round * 0.3 + 1.2
+				return game_round * 0.225 + 1.2
 			_: #NORMAL
-				return game_round * 0.2 + 1.0
+				return game_round * 0.15 + 1.0
 
 var large_asteroids_number: int:
 	get:

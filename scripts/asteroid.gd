@@ -51,25 +51,25 @@ var mass_multiplier: float:
 		return pow(2, size) * 2
 
 func _ready() -> void:
-	rotation = randf_range(0, 2 * PI)
 	match size:
 		AsteroidSize.SMALL:
-			speed = randf_range(speed_multiplier * 2.5 * BASE_SPEED, speed_multiplier * 3.5 * BASE_SPEED)
+			speed = randf_range(speed_multiplier * 2.4 * BASE_SPEED, speed_multiplier * 3.2 * BASE_SPEED)
 			sprite.texture = preload("res://assets/textures/asteroid_small.png")
 			cshape.shape = preload("res://resources/asteroid_cshape_small.tres")
 			cshape.position = Vector2(1, -1)
 		AsteroidSize.MEDIUM:
-			speed = randf_range(speed_multiplier * 1.5 * BASE_SPEED, speed_multiplier * 2.5 * BASE_SPEED)
+			speed = randf_range(speed_multiplier * 1.7 * BASE_SPEED, speed_multiplier * 2.4 * BASE_SPEED)
 			sprite.texture = preload("res://assets/textures/asteroid_medium.png")
 			cshape.shape = preload("res://resources/asteroid_cshape_medium.tres")
 			cshape.position = Vector2.ZERO
 		AsteroidSize.LARGE:
 			alfa = 0.0
-			speed = randf_range(speed_multiplier * BASE_SPEED, speed_multiplier * 1.5 * BASE_SPEED)
+			speed = randf_range(speed_multiplier * 1.0 * BASE_SPEED, speed_multiplier * 1.7 * BASE_SPEED)
 			sprite.modulate.a = alfa
 			sprite.texture = preload("res://assets/textures/asteroid_large.png")
 			cshape.shape = preload("res://resources/asteroid_cshape_large.tres")
 			cshape.position = Vector2(0, -4)
+	rotation = randf_range(0, 2 * PI)
 	center_offset = cshape.position.rotated(rotation)
 
 func _process(delta: float) -> void:
