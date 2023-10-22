@@ -53,6 +53,18 @@ var game_round_label: String:
 	get:
 		return "ROUND: " + str(game_round + 1)
 
+var is_mobile: bool:
+	get:
+		var os_name = OS.get_name()
+		return os_name == "Android" || os_name == "iOS"
+
+var default_window_mode: WindowMode:
+	get:
+		if is_mobile:
+			return WindowMode.FULLSCREEN
+		else:
+			return WindowMode.WINDOW
+
 func init() -> void:
 	lives = 3
 	score = 0
@@ -63,7 +75,7 @@ func load_config() -> void:
 	var config = ConfigFile.new()
 	var err = config.load(CONFIG_FILE)
 	if err != OK:
-		window_mode = WindowMode.WINDOW
+		window_mode = default_window_mode
 		difficulty = Difficulty.NORMAL
 		detail = Detail.HIGH
 		sfx_volume = 1.0
@@ -75,7 +87,7 @@ func load_config() -> void:
 		high_scores[Difficulty.HARD] = 0
 		save_config()
 	else:
-		window_mode = config.get_value("options", "window_mode", WindowMode.WINDOW)
+		window_mode = config.get_value("options", "window_mode", default_window_mode)
 		difficulty = config.get_value("options", "difficulty", Difficulty.NORMAL)
 		detail = config.get_value("options", "detail", Detail.HIGH)
 		sfx_volume = config.get_value("options", "sfx_volume", 1.0)

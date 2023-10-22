@@ -27,6 +27,8 @@ func _ready() -> void:
 	options_menu.visible = false
 	highscore_menu.visible = false
 	credits_menu.visible = false
+	if Global.is_mobile:
+		fullscreen_check.visible = false
 
 func _on_game_button_pressed() -> void:
 	match face:
