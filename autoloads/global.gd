@@ -65,11 +65,12 @@ var default_window_mode: WindowMode:
 		else:
 			return WindowMode.WINDOW
 
-func init() -> void:
+func init(config: bool) -> void:
 	lives = 3
 	score = 0
 	game_round = 0
-	load_config()
+	if config:
+		load_config()
 
 func load_config() -> void:
 	var config = ConfigFile.new()

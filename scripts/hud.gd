@@ -1,4 +1,4 @@
-class_name UIHud extends Control
+class_name UIHud extends CanvasLayer
 
 var LifeScene: PackedScene = preload("res://scenes/life.tscn")
 

@@ -1,67 +1,24 @@
-extends Node2D
+class_name Game extends Node2D
+
+signal game_over()
 
 const PowerupScene: PackedScene = preload("res://scenes/power_up.tscn")
 const AsteroidScene: PackedScene = preload("res://scenes/asteroid.tscn")
 
-@onready var ui_hud: UIHud = $UI/HUD
-@onready var ui_menu: UIMenu = $UI/Menu
+@onready var hud: UIHud = $HUD
 @onready var player: Player = $Player
 @onready var lasers: Node2D = $Lasers
 @onready var powerups: Node2D = $PowerUps
 @onready var asteroids: Node2D = $Asteroids
-@onready var starfield: Starfield = $Starfield
 @onready var player_spawn_pos: Node2D = $PlayerSpawnPos
 @onready var player_spawn_area: PlayerSpawnArea = $PlayerSpawnPos/PlayerSpawnArea
 
-var intro_music_seek: float = 0.0 
-
 func _ready() -> void:
-	Global.init()
-	starfield.set_starfield()
-	ui_menu.update()
-	_on_menu_change_options()
-	if Global.game_started:
-		ui_hud.update()
-		ui_hud.visible = true
-		ui_menu.visible = false
-		player.spawn_pos = player_spawn_pos.global_position
-		next_round(true)
-		MusicController.set_new_game_music()
-		MusicController.play_music_immediate(MusicController.Type.GAME, false, false)
-	else:
-		ui_hud.visible = false
-		player.visible = false
-		ui_menu.show_menu(ui_menu.MenuFace.MAIN)
-		MusicController.play_music_immediate(MusicController.Type.INTRO, false, false)
+	pass
 
 func _process(_delta: float) -> void:
-	if Input.is_action_pressed("pause") && Global.lives > 0:
-		get_tree().paused = true
-		ui_menu.show_menu(ui_menu.MenuFace.PAUSE)
-		MusicController.stop_music_immediate(false)
-		MusicController.play_music(MusicController.Type.INTRO, true, true)
 	if Global.game_started && asteroids.get_children().size() == 0:
 		next_round(false)
-
-func _on_menu_change_options() -> void:
-	match Global.window_mode:
-		Global.WindowMode.WINDOW:
-			if get_tree().get_root().mode != Window.MODE_WINDOWED:
-				get_tree().get_root().mode = Window.MODE_WINDOWED
-		Global.WindowMode.FULLSCREEN:
-			if get_tree().get_root().mode != Window.MODE_EXCLUSIVE_FULLSCREEN:
-				get_tree().get_root().mode = Window.MODE_EXCLUSIVE_FULLSCREEN
-	match Global.detail:
-		Global.Detail.LOW:
-			if texture_filter != TEXTURE_FILTER_NEAREST:
-				texture_filter = TEXTURE_FILTER_NEAREST
-		Global.Detail.MEDIUM:
-			if texture_filter != TEXTURE_FILTER_PARENT_NODE:
-				texture_filter = TEXTURE_FILTER_PARENT_NODE
-		Global.Detail.HIGH:
-			if texture_filter != TEXTURE_FILTER_PARENT_NODE:
-				texture_filter = TEXTURE_FILTER_PARENT_NODE
-	starfield.set_starfield()
 
 func _on_player_laser_shoot(laser: Laser) -> void:
 	SfxController.play_in_unique_player(SfxController.Sfx.LASER, player.get_instance_id())
@@ -70,46 +27,52 @@ func _on_player_laser_shoot(laser: Laser) -> void:
 func _on_player_poweruped(type: PowerUp.Type) -> void:
 	match type:
 		PowerUp.Type.LASER:
-			ui_hud.show_tip("Increased rate of fire", Color(0.6, 1.0, 0.6))
+			hud.show_tip("Increased rate of fire", Color(0.6, 1.0, 0.6))
 		PowerUp.Type.TURN:
-			ui_hud.show_tip("Increased turning speed", Color(1.0, 0.6, 0.6))
+			hud.show_tip("Increased turning speed", Color(1.0, 0.6, 0.6))
 		PowerUp.Type.SPEED:
-			ui_hud.show_tip("Increased thrust power", Color(0.3, 0.7, 1.0))
+			hud.show_tip("Increased thrust power", Color(0.3, 0.7, 1.0))
 	await get_tree().create_timer(1.5).timeout
-	ui_hud.hide_tip()
+	hud.hide_tip()
 
 func _on_player_died() -> void:
 	SfxController.play(SfxController.Sfx.DIE)
 	Global.lives -= 1
-	ui_hud.update()
+	hud.update()
 	if Global.lives > 0:
 		await get_tree().create_timer(0.5).timeout
-		ui_hud.show_round()
+		hud.show_round()
 		player.pre_respawn()
 		await get_tree().create_timer(2).timeout
 		while !player_spawn_area.is_empty:
 			await get_tree().create_timer(0.1).timeout
 		player.respawn()
-		ui_hud.hide_round()
+		hud.hide_round()
 	else:
-		MusicController.stop_music_immediate(true)
-		await get_tree().create_timer(0.5).timeout
-		if Global.score > Global.high_score:
-			Global.high_score = Global.score
-			Global.save_config()
-			ui_menu.update()
-		MusicController.play_music(MusicController.Type.INTRO, true, true)
-		ui_menu.show_menu(ui_menu.MenuFace.GAMEOVER)
+		emit_signal("game_over")
 
 func _on_asteroid_exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int) -> void:
 	SfxController.play_in_unique_player(SfxController.Sfx.HIT)
 	add_score(points)
-	ui_hud.update()
+	hud.update()
 	match size:
 		Asteroid.AsteroidSize.MEDIUM:
 			spawn_twin_asteroids(pos, new_rotation, Asteroid.AsteroidSize.SMALL)
 		Asteroid.AsteroidSize.LARGE:
 			spawn_twin_asteroids(pos, new_rotation, Asteroid.AsteroidSize.MEDIUM)
+
+func new_game(is_game_over: bool):
+	if Global.game_started:
+		if (is_game_over):
+			remove_lasers_powerups_asteroids()
+			Global.init(false)
+			player.new_game()
+		hud.update()
+		hud.visible = true
+		MusicController.set_new_game_music()
+		MusicController.play_music_immediate(MusicController.Type.GAME, false, false)
+		player.spawn_pos = player_spawn_pos.global_position
+		next_round(true)
 
 func add_score(points: int) -> void:
 	var new_score := Global.score + points
@@ -168,8 +131,19 @@ func next_round(first_round: bool) -> void:
 	if !Global.next_round_pause:
 		Global.next_round_pause = true
 		if !first_round: Global.game_round += 1
-		ui_hud.show_round()
+		hud.show_round()
 		await get_tree().create_timer(2.5).timeout
-		ui_hud.hide_round()
+		hud.hide_round()
 		spawn_large_asteroids()
 		Global.next_round_pause = false
+
+func remove_lasers_powerups_asteroids() -> void:
+	for child in lasers.get_children():
+		lasers.remove_child(child)
+		child.queue_free()
+	for child in powerups.get_children():
+		powerups.remove_child(child)
+		child.queue_free()
+	for child in asteroids.get_children():
+		asteroids.remove_child(child)
+		child.queue_free()

@@ -1,8 +1,9 @@
-class_name UIMenu extends Control
+class_name UIMenu extends CanvasLayer
 
 enum MenuFace {MAIN, PAUSE, GAMEOVER}
 
 signal change_options()
+signal new_game(is_game_over: bool)
 
 @onready var main_menu: Control = $MainMenu
 @onready var options_menu: Control = $OptionMenu
@@ -35,7 +36,7 @@ func _on_game_button_pressed() -> void:
 		MenuFace.MAIN: #NEW GAME
 			Global.game_started = true
 			MusicController.stop_music_immediate(false)
-			get_tree().reload_current_scene()
+			emit_signal("new_game", false)
 		MenuFace.PAUSE: #RESUME
 			get_tree().paused = false
 			MusicController.stop_music_immediate(false)
@@ -43,7 +44,7 @@ func _on_game_button_pressed() -> void:
 		MenuFace.GAMEOVER: #TRY AGAIN
 			Global.game_started = true
 			MusicController.stop_music_immediate(false)
-			get_tree().reload_current_scene()
+			emit_signal("new_game", true)
 	visible = false
 	Global.game_menu = false
 

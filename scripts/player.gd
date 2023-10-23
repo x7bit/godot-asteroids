@@ -132,9 +132,18 @@ func powerup(type: PowerUp.Type) -> void:
 
 func pre_respawn() -> void:
 	if !alive:
-		ship_sprite.modulate.a = 0.3
+		ship_sprite.modulate.a = 0.4
 
 func respawn() -> void:
 	if !alive:
 		alive = true
 		ship_sprite.modulate.a = 1.0
+
+func new_game() -> void:
+	alive = true
+	ship_sprite.modulate.a = 1.0
+	rotation_speed = ROTATION_SPEED
+	max_speed = MAX_SPEED
+	acceleration = ACCELERATION
+	deceleration = DECELERATION
+	rate_of_laser = RATE_OF_LASER

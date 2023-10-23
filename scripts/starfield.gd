@@ -1,8 +1,8 @@
 class_name Starfield extends Node2D
 
-const StarfieldBackScene: PackedScene = preload("res://scenes/starfield_back.tscn")
-const StarfieldMiddleScene: PackedScene = preload("res://scenes/starfield_middle.tscn")
-const StarfieldFrontScene: PackedScene = preload("res://scenes/starfield_front.tscn")
+@onready var starfield_front: GPUParticles2D = $StarfieldFront
+@onready var starfield_middle: GPUParticles2D = $StarfieldMiddle
+@onready var starfield_back: GPUParticles2D = $StarfieldBack
 
 func _ready() -> void:
 	pass
@@ -13,39 +13,32 @@ func _process(_delta: float) -> void:
 func set_starfield() -> void:
 	match Global.detail:
 		Global.Detail.LOW:
-			match get_children().size():
-				0:
-					call_deferred("add_child", StarfieldBackScene.instantiate())
-				1:
-					pass
-				_:
-					for i in get_children().size() - 1:
-						get_children()[-i-1].queue_free()
+			if starfield_front.visible:
+				starfield_front.emitting = false
+				starfield_front.visible = false
+			if !starfield_middle.visible:
+				starfield_middle.emitting = true
+				starfield_middle.visible = true
+			if starfield_back.visible:
+				starfield_back.emitting = false
+				starfield_back.visible = false
 		Global.Detail.MEDIUM:
-			match get_children().size():
-				0:
-					call_deferred("add_child", StarfieldBackScene.instantiate())
-					call_deferred("add_child", StarfieldMiddleScene.instantiate())
-				1:
-					call_deferred("add_child", StarfieldMiddleScene.instantiate())
-				2:
-					pass
-				_:
-					for i in get_children().size() - 2:
-						get_children()[-i-1].queue_free()
+			if !starfield_front.visible:
+				starfield_front.emitting = true
+				starfield_front.visible = true
+			if !starfield_middle.visible:
+				starfield_middle.emitting = true
+				starfield_middle.visible = true
+			if starfield_back.visible:
+				starfield_back.emitting = false
+				starfield_back.visible = false
 		Global.Detail.HIGH:
-			match get_children().size():
-				0:
-					call_deferred("add_child", StarfieldBackScene.instantiate())
-					call_deferred("add_child", StarfieldMiddleScene.instantiate())
-					call_deferred("add_child", StarfieldFrontScene.instantiate())
-				1:
-					call_deferred("add_child", StarfieldMiddleScene.instantiate())
-					call_deferred("add_child", StarfieldFrontScene.instantiate())
-				2:
-					call_deferred("add_child", StarfieldFrontScene.instantiate())
-				3:
-					pass
-				_:
-					for i in get_children().size() - 3:
-						get_children()[-i-1].queue_free()
+			if !starfield_front.visible:
+				starfield_front.emitting = true
+				starfield_front.visible = true
+			if !starfield_middle.visible:
+				starfield_middle.emitting = true
+				starfield_middle.visible = true
+			if !starfield_back.visible:
+				starfield_back.emitting = true
+				starfield_back.visible = true

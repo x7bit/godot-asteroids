@@ -1,23 +1,16 @@
-[gd_scene load_steps=8 format=3 uid="uid://b7vrsbwevt2xy"]
+[gd_scene load_steps=6 format=3 uid="uid://b7vrsbwevt2xy"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_6xe2l"]
 [ext_resource type="PackedScene" uid="uid://c3jhgad74myma" path="res://scenes/player.tscn" id="1_h6fhk"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_w0sip"]
 [ext_resource type="PackedScene" uid="uid://ymtwbpsn7q6" path="res://scenes/hud.tscn" id="2_yvwfo"]
-[ext_resource type="PackedScene" uid="uid://chk7xkp2mqp7v" path="res://scenes/menu.tscn" id="3_arl21"]
 [ext_resource type="PackedScene" uid="uid://dtapedwf5bfad" path="res://scenes/player_spawn_area.tscn" id="7_scvdi"]
-[ext_resource type="Script" path="res://scripts/starfield.gd" id="9_601ti"]
 
 [node name="Game" type="Node2D"]
 position = Vector2(1, 0)
 script = ExtResource("1_6xe2l")
 
-[node name="UI" type="CanvasLayer" parent="."]
-
-[node name="HUD" parent="UI" instance=ExtResource("2_yvwfo")]
-
-[node name="Menu" parent="UI" instance=ExtResource("3_arl21")]
-visible = false
+[node name="HUD" parent="." instance=ExtResource("2_yvwfo")]
 
 [node name="Player" parent="." instance=ExtResource("1_h6fhk")]
 z_index = 1
@@ -34,10 +27,6 @@ position = Vector2(640, 360)
 
 [node name="PlayerSpawnArea" parent="PlayerSpawnPos" instance=ExtResource("7_scvdi")]
 
-[node name="Starfield" type="Node2D" parent="."]
-script = ExtResource("9_601ti")
-
-[connection signal="change_options" from="UI/Menu" to="." method="_on_menu_change_options"]
 [connection signal="died" from="Player" to="." method="_on_player_died"]
 [connection signal="laser_shoot" from="Player" to="." method="_on_player_laser_shoot"]
 [connection signal="poweruped" from="Player" to="." method="_on_player_poweruped"]

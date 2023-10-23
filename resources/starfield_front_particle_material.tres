@@ -1,9 +1,9 @@
 [gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://b1c3a3jiadcum"]
 
-[ext_resource type="Gradient" uid="uid://bsa6dt2f6p2tr" path="res://resources/starfield_gradient.tres" id="1_41wod"]
+[ext_resource type="Gradient" uid="uid://cfft70dy2htc4" path="res://resources/starfield_gradient.tres" id="1_g5ctb"]
 
-[sub_resource type="GradientTexture1D" id="GradientTexture1D_vb1xo"]
-gradient = ExtResource("1_41wod")
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_rf666"]
+gradient = ExtResource("1_g5ctb")
 
 [resource]
 emission_shape = 3
@@ -17,4 +17,5 @@ orbit_velocity_min = 0.0
 orbit_velocity_max = 0.0
 scale_min = 0.03
 scale_max = 0.04
-color_initial_ramp = SubResource("GradientTexture1D_vb1xo")
+color_initial_ramp = SubResource("GradientTexture1D_rf666")
+attractor_interaction_enabled = false
