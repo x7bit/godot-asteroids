@@ -53,8 +53,9 @@ func _on_player_died() -> void:
 
 func _on_asteroid_exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int) -> void:
 	SfxController.play_in_unique_player(SfxController.Sfx.HIT)
-	add_score(points)
-	hud.update()
+	if Global.lives > 0:
+		add_score(points)
+		hud.update()
 	match size:
 		Asteroid.AsteroidSize.MEDIUM:
 			spawn_twin_asteroids(pos, new_rotation, Asteroid.AsteroidSize.SMALL)
