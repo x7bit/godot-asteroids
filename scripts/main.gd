@@ -4,7 +4,7 @@ extends Node2D
 @onready var game: Game = $Game
 @onready var starfield: Starfield = $Starfield
 
-func _ready():
+func _ready() -> void:
 	Global.init(true)
 	starfield.set_starfield()
 	menu.update()
@@ -14,7 +14,7 @@ func _ready():
 	MusicController.play_music_immediate(MusicController.Type.INTRO, false, false)
 
 func _process(_delta: float) -> void:
-	if Input.is_action_pressed("pause") && Global.lives > 0:
+	if Input.is_action_pressed("pause") && Global.lives > 0 && !Global.game_menu:
 		get_tree().paused = true
 		menu.show_menu(menu.MenuFace.PAUSE)
 		MusicController.stop_music_immediate(false)
