@@ -4,37 +4,42 @@ signal laser_shoot(laser: Laser)
 signal poweruped(type: PowerUp.Type)
 signal died()
 
-const ROTATION_SPEED := 140.0
-const MAX_SPEED := 320.0
-const ACCELERATION := 8.0
-const DECELERATION := 3.0
-const GRAVITY := 1.5
-const RATE_OF_LASER := 0.2
+const ROTATION_SPEED: float = 140.0
+const MAX_SPEED: float = 320.0
+const ACCELERATION: float = 8.0
+const DECELERATION: float = 3.0
+const GRAVITY: float = 1.5
+const RATE_OF_LASER: float = 0.2
 
 const LaserScene: PackedScene = preload("res://scenes/laser.tscn")
 
-@onready var ship_sprite: Sprite2D = $Sprite2D_Ship
+@onready var ship_sprite: Sprite2D = $ShipSprite2D
 @onready var cpoly:CollisionPolygon2D = $CollisionPolygon2D
 @onready var muzzles: Array[Node2D] = [$Muzzle1, $Muzzle2]
-@onready var thrusts: Array[Sprite2D] = [$Sprite2D_ThrustL, $Sprite2D_ThrustR]
+@onready var thrusts: Array[Sprite2D] = [$ThrustLSprite2D, $ThrustRSprite2D]
+@onready var indicator: Indicator = $Indicator
 @onready var die_particles: Array[GPUParticles2D] = [
 	$DieParticles/Fire1Particles,
 	$DieParticles/Fire2Particles,
 	$DieParticles/ExplosionParticles
 ]
 
-var rotation_speed := ROTATION_SPEED
-var max_speed := MAX_SPEED
-var acceleration := ACCELERATION
-var deceleration := DECELERATION
-var rate_of_laser := RATE_OF_LASER
+var rotation_speed: float = ROTATION_SPEED
+var max_speed: float = MAX_SPEED
+var acceleration: float = ACCELERATION
+var deceleration: float = DECELERATION
+var rate_of_laser: float = RATE_OF_LASER
 
-var alive := true
-var spawn_pos := Vector2.ZERO
-var laser_cooldown := false
-var muzzle_idx := 0
-var thrust_forward := false
-var thrust_alfa := 0.0
+var alive: bool = true
+var spawn_pos: Vector2 = Vector2.ZERO
+var laser_cooldown: bool = false
+var muzzle_idx: int = 0
+var thrust_forward: bool = false
+var thrust_alfa: float = 0.0
+
+var move_angle: float:
+	get:
+		return Util.get_rotation_based_up_vector(velocity)
 
 func _ready() -> void:
 	thrust_forward = false
@@ -81,16 +86,24 @@ func move(delta: float) -> void:
 	if Input.is_action_pressed("rotate_right"):
 		rotate(deg_to_rad(rotation_speed * delta))
 	velocity = velocity.limit_length(max_speed).move_toward(Vector2.ZERO, GRAVITY)
+	##OFF SCREEN TRANSITIONS
 	var screen_size: Vector2 = get_viewport_rect().size
 	var player_half_size: Vector2 = Util.get_poly_rect(cpoly.get_polygon(), scale).size / 2
+	var indicator_prev_position: Vector2 = indicator.global_position
+	indicator.parent_move_angle = move_angle
+	#POSITION
 	if (global_position.y + player_half_size.y) < 0: #UP
 		global_position.y = screen_size.y + player_half_size.y
+		indicator.global_position = indicator_prev_position
 	elif (global_position.y - player_half_size.y) > screen_size.y: #DOWN
 		global_position.y = -player_half_size.y
+		indicator.global_position = indicator_prev_position
 	if (global_position.x + player_half_size.x) < 0: #LEFT
 		global_position.x = screen_size.x + player_half_size.x
+		indicator.global_position = indicator_prev_position
 	elif (global_position.x - player_half_size.x) > screen_size.x: #RIGHT
 		global_position.x = -player_half_size.x
+		indicator.global_position = indicator_prev_position
 
 func shoot() -> void:
 	var muzzle: Node2D = muzzles[muzzle_idx]

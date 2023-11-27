@@ -8,10 +8,11 @@ const BASE_SPEED: float = 50.0
 
 @onready var sprite: Sprite2D = $Sprite2D
 @onready var cshape: CollisionShape2D = $CollisionShape2D
+@onready var indicator: Indicator = $Indicator
 
 @export var size: AsteroidSize = AsteroidSize.LARGE
 var center_offset: Vector2 = Vector2.ZERO
-var move_rotation: float = 0.0
+var move_angle: float = 0.0
 var speed: float = BASE_SPEED
 var speed_multiplier: float = 1.0
 var alfa: float = 1.0
@@ -50,6 +51,14 @@ var mass_multiplier: float:
 	get:
 		return pow(2, size) * 2
 
+var indicator_scale: Vector2:
+	get:
+		match size:
+			AsteroidSize.SMALL: return Vector2(0.15, 0.15)
+			AsteroidSize.MEDIUM: return Vector2(0.2, 0.2)
+			AsteroidSize.LARGE: return Vector2(0.25, 0.25)
+			_: return Vector2.ZERO
+
 func _ready() -> void:
 	match size:
 		AsteroidSize.SMALL:
@@ -71,22 +80,32 @@ func _ready() -> void:
 			cshape.position = Vector2(0, -4)
 	rotation = randf_range(0, 2 * PI)
 	center_offset = cshape.position.rotated(rotation)
+	indicator.scale = indicator_scale
+	indicator.rotate(-rotation + move_angle)
 
 func _process(delta: float) -> void:
 	if alfa < 1.0:
 		alfa = minf(alfa + 1.5 * delta, 1.0)
 		sprite.modulate.a = alfa
 	else:
-		global_position += Vector2.UP.rotated(move_rotation) * speed * delta
+		global_position += Vector2.UP.rotated(move_angle) * speed * delta
+		##OFF SCREEN TRANSITIONS
 		var screen_size: Vector2 = get_viewport_rect().size
+		var indicator_prev_position: Vector2 = indicator.global_position
+		indicator.parent_move_angle = move_angle
+		#POSITION
 		if (global_position.y + radius) < 0: #UP
 			global_position.y = screen_size.y + radius
+			indicator.global_position = indicator_prev_position
 		elif (global_position.y - radius) > screen_size.y: #DOWN
 			global_position.y = -radius
+			indicator.global_position = indicator_prev_position
 		if (global_position.x + radius) < 0: #LEFT
 			global_position.x = screen_size.x + radius
+			indicator.global_position = indicator_prev_position
 		elif (global_position.x - radius) > screen_size.x: #RIGHT
 			global_position.x = -radius
+			indicator.global_position = indicator_prev_position
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
@@ -109,7 +128,7 @@ func _on_area_exited(area: Area2D) -> void:
 func init(_pos: Vector2, _new_rotation: float, _size: Asteroid.AsteroidSize) -> void:
 	global_position = _pos
 	size = _size
-	move_rotation = _new_rotation
+	move_angle = _new_rotation
 	speed_multiplier = Global.asteroid_speed_multiplier
 
 func explode(laser: Laser) -> void:
@@ -131,6 +150,7 @@ func bounce(asteroid: Asteroid) -> void:
 		SfxController.play_in_unique_player(SfxController.Sfx.BOUNCE)
 
 func reflect(normal_vector: Vector2) -> void:
-	var move_vector := Vector2.UP.rotated(move_rotation)
-	move_rotation = Util.get_rotation_based_up_vector(move_vector.reflect(normal_vector))
-
+	var move_vector := Vector2.UP.rotated(move_angle)
+	move_angle = Util.get_rotation_based_up_vector(move_vector.reflect(normal_vector))
+	indicator.rotation = 0.0
+	indicator.rotate(-rotation + move_angle)

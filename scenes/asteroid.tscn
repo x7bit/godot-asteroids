@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://baawx8s8henam"]
+[gd_scene load_steps=5 format=3 uid="uid://baawx8s8henam"]
 
 [ext_resource type="Script" path="res://scripts/asteroid.gd" id="1_j7m0b"]
 [ext_resource type="Texture2D" uid="uid://cam5lc7bkw2ia" path="res://assets/textures/asteroid_large.png" id="2_usxxr"]
 [ext_resource type="Shape2D" uid="uid://djgruwtb7mtyn" path="res://resources/asteroid_cshape_large.tres" id="3_h5hdf"]
+[ext_resource type="PackedScene" uid="uid://bj8l8u3a63ufp" path="res://scenes/indicator.tscn" id="5_ippmg"]
 
 [node name="Asteroid" type="Area2D"]
 collision_layer = 4
@@ -15,6 +16,9 @@ texture = ExtResource("2_usxxr")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
 shape = ExtResource("3_h5hdf")
+
+[node name="Indicator" parent="." instance=ExtResource("5_ippmg")]
+modulate = Color(0.866667, 0.866667, 0.866667, 1)
 
 [connection signal="area_entered" from="." to="." method="_on_area_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_exited"]

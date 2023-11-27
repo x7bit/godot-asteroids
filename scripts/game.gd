@@ -94,7 +94,7 @@ func spawn_large_asteroids() -> void:
 			new_pos.y = randf_range(0, screen_size.y)
 			distance_array = pos_array.map(func(pos): return new_pos.distance_squared_to(pos))
 		pos_array.push_back(new_pos)
-		spawn_asteroid(new_pos, randf_range(0, 2 * PI), Asteroid.AsteroidSize.LARGE)
+		spawn_asteroid(new_pos, randf_range(-PI, PI), Asteroid.AsteroidSize.LARGE)
 
 func spawn_twin_asteroids(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize) -> void:
 	var asteroid1 := AsteroidScene.instantiate()
