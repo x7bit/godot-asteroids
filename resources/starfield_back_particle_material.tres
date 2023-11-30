@@ -1,13 +1,11 @@
 [gd_resource type="ParticleProcessMaterial" format=3 uid="uid://ccoyfgsmx4wy3"]
 
 [resource]
+particle_flag_disable_z = true
 emission_shape = 3
 emission_box_extents = Vector3(1, 360, 1)
-particle_flag_disable_z = true
 spread = 0.0
-gravity = Vector3(0, 0, 0)
 initial_velocity_min = -10.0
 initial_velocity_max = -10.0
-orbit_velocity_min = 0.0
-orbit_velocity_max = 0.0
+gravity = Vector3(0, 0, 0)
 color = Color(1, 1, 0.980392, 1)
