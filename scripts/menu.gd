@@ -6,23 +6,21 @@ signal change_options()
 signal new_game(is_game_over: bool)
 
 @onready var main_menu: Control = $MainMenu
-@onready var main_container: BoxContainer = $MainMenu/MainVBoxContainer
 @onready var options_menu: Control = $OptionMenu
-@onready var options_container: BoxContainer = $OptionMenu/OptionsVBoxContainer
 @onready var highscore_menu: Control = $HighScoreMenu
-@onready var highscore_container: BoxContainer = $HighScoreMenu/HighScoreVBoxContainer
 @onready var credits_menu: Control = $CreditsMenu
-@onready var credits_container: BoxContainer = $CreditsMenu/CreditsVBoxContainer
 @onready var title_label: Label = $MainMenu/MainVBoxContainer/TitleLabel
 @onready var game_button: Button = $MainMenu/MainVBoxContainer/GameButton
-@onready var fullscreen_check: CheckButton = $OptionMenu/OptionsVBoxContainer/FullScreenCheckButton
 @onready var difficulty_options: OptionButton = $OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer/DifficultyOptionButton
 @onready var detail_options: OptionButton = $OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton
+@onready var fullscreen_check: CheckButton = $OptionMenu/OptionsVBoxContainer/ScreenHBoxContainer/FullScreenCheckButton
 @onready var sfx_slider: HSlider = $OptionMenu/OptionsVBoxContainer/SfxHBoxContainer/SfxHSlider
 @onready var music_slider: HSlider = $OptionMenu/OptionsVBoxContainer/MusicHBoxContainer/MusicHSlider
 @onready var easy_score: Label = $HighScoreMenu/HighScoreVBoxContainer/EasyHBoxContainer/EasyScoreLabel
 @onready var normal_score: Label = $HighScoreMenu/HighScoreVBoxContainer/NormalHBoxContainer/NormalScoreLabel
 @onready var hard_score: Label = $HighScoreMenu/HighScoreVBoxContainer/HardHBoxContainer/HardScoreLabel
+@onready var score_back_button: Button = $HighScoreMenu/HighScoreVBoxContainer/BackButton
+@onready var credits_back_button: Button = $CreditsMenu/CreditsVBoxContainer/BackButton
 
 var face: MenuFace = MenuFace.MAIN
 
@@ -34,17 +32,10 @@ func _ready() -> void:
 	credits_menu.visible = false
 	if Global.is_mobile:
 		fullscreen_check.visible = false
+	grab_focus()
 
 func _process(_delta: float) -> void:
-	if Global.game_menu:
-		if Input.is_action_just_pressed("move_forward"):
-			move_vertically(true)
-		if Input.is_action_just_pressed("move_backward"):
-			move_vertically(false)
-		if Input.is_action_pressed("rotate_left"):
-			move_horizontally(true)
-		if Input.is_action_pressed("rotate_right"):
-			move_horizontally(false)
+	pass
 
 func _on_game_button_pressed() -> void:
 	match face:
@@ -66,14 +57,17 @@ func _on_game_button_pressed() -> void:
 func _on_options_button_pressed() -> void:
 	main_menu.visible = false
 	options_menu.visible = true
+	grab_focus()
 
 func _on_high_score_button_pressed() -> void:
 	main_menu.visible = false
 	highscore_menu.visible = true
+	grab_focus()
 
 func _on_credits_button_pressed() -> void:
 	main_menu.visible = false
 	credits_menu.visible = true
+	grab_focus()
 
 func _on_exit_button_pressed() -> void:
 	get_tree().quit()
@@ -113,6 +107,7 @@ func _on_back_button_pressed() -> void:
 	options_menu.visible = false
 	highscore_menu.visible = false
 	credits_menu.visible = false
+	grab_focus()
 
 func update() -> void:
 	fullscreen_check.button_pressed = Global.window_mode == Global.WindowMode.FULLSCREEN
@@ -141,43 +136,14 @@ func show_menu(new_face: MenuFace) -> void:
 	face = new_face
 	visible = true
 	Global.game_menu = true
+	grab_focus()
 
-func move_vertically(up: bool) -> void:
-	var container: BoxContainer = get_container()
-	var control_array: Array[Control] = Util.get_interactive_control_array(container)
-	if control_array.size() > 0:
-		var focus_idx: int = Util.get_focus_index(control_array)
-		var offset_idx = -1 if up else 1
-		if focus_idx != -1 && control_array[focus_idx] is OptionButton:
-			var option_popup: PopupMenu = control_array[focus_idx].get_popup()
-			if option_popup.visible:
-				var new_selected_idx: int = (option_popup.get_focused_item() + offset_idx) % option_popup.item_count
-				new_selected_idx = option_popup.item_count - 1 if new_selected_idx == -1 else new_selected_idx
-				option_popup.set_focused_item(new_selected_idx)
-				option_popup.emit_signal("index_pressed", new_selected_idx)
-				return
-		var new_idx: int = 0 if focus_idx == -1 else (focus_idx + offset_idx) % control_array.size()
-		control_array[new_idx].grab_focus()
-
-func move_horizontally(left: bool) -> void:
-	var container: BoxContainer = get_container()
-	var control_array: Array[Control] = Util.get_interactive_control_array(container)
-	if control_array.size() > 0:
-		var focus_idx: int = Util.get_focus_index(control_array)
-		var offset_val: float = -0.002 if left else 0.002
-		if focus_idx != -1 && control_array[focus_idx] is Slider:
-			var slider = control_array[focus_idx]
-			var new_val: float = slider.value + offset_val
-			new_val = maxf(new_val, 0)
-			new_val = minf(new_val, 1)
-			slider.value = new_val
-
-func get_container() -> BoxContainer:
+func grab_focus() -> void:
 	if options_menu.visible:
-		return options_container
+		difficulty_options.grab_focus()
 	elif highscore_menu.visible:
-		return highscore_container
+		score_back_button.grab_focus()
 	elif credits_menu.visible:
-		return credits_container
+		credits_back_button.grab_focus()
 	else:
-		return main_container
+		game_button.grab_focus()

@@ -45,6 +45,7 @@ horizontal_alignment = 1
 
 [node name="GameButton" type="Button" parent="MainMenu/MainVBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../ExitButton")
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
 text = "GAME"
@@ -69,6 +70,7 @@ text = "CREDITS"
 
 [node name="ExitButton" type="Button" parent="MainMenu/MainVBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../GameButton")
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
 text = "EXIT"
@@ -111,12 +113,6 @@ theme_override_font_sizes/font_size = 56
 text = "OPTIONS"
 horizontal_alignment = 1
 
-[node name="FullScreenCheckButton" type="CheckButton" parent="OptionMenu/OptionsVBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("2_nvajy")
-theme_override_font_sizes/font_size = 32
-text = "FULL SCREEN:"
-
 [node name="DifficultyHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
 layout_mode = 2
 theme_override_constants/separation = 12
@@ -130,6 +126,7 @@ text = "DIFFICULTY:"
 
 [node name="DifficultyOptionButton" type="OptionButton" parent="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../../BackButton")
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
 item_count = 3
@@ -165,7 +162,23 @@ popup/item_1/id = 1
 popup/item_2/text = "HIGH"
 popup/item_2/id = 2
 
-[node name="Label" type="Label" parent="OptionMenu/OptionsVBoxContainer"]
+[node name="ScreenHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="ScreenLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer/ScreenHBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+text = "Full Screen:"
+
+[node name="FullScreenCheckButton" type="CheckButton" parent="OptionMenu/OptionsVBoxContainer/ScreenHBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 10
+theme_override_fonts/font = ExtResource("2_nvajy")
+theme_override_font_sizes/font_size = 32
+
+[node name="VolumeLabel" type="Label" parent="OptionMenu/OptionsVBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
@@ -211,6 +224,7 @@ value = 1.0
 
 [node name="BackButton" type="Button" parent="OptionMenu/OptionsVBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../DifficultyHBoxContainer/DifficultyOptionButton")
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
 text = "BACK"
@@ -359,6 +373,7 @@ text = "PROGRAMMING:"
 
 [node name="CodeButton" type="Button" parent="CreditsMenu/CreditsVBoxContainer/CodeHBoxContainer"]
 layout_mode = 2
+focus_neighbor_top = NodePath("../../BackButton")
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
 text = "X7BIT"
@@ -399,6 +414,7 @@ text = "KAAN ALPAR"
 
 [node name="BackButton" type="Button" parent="CreditsMenu/CreditsVBoxContainer"]
 layout_mode = 2
+focus_neighbor_bottom = NodePath("../CodeHBoxContainer/CodeButton")
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
 text = "BACK"
@@ -408,9 +424,9 @@ text = "BACK"
 [connection signal="pressed" from="MainMenu/MainVBoxContainer/HighScoreButton" to="." method="_on_high_score_button_pressed"]
 [connection signal="pressed" from="MainMenu/MainVBoxContainer/CreditsButton" to="." method="_on_credits_button_pressed"]
 [connection signal="pressed" from="MainMenu/MainVBoxContainer/ExitButton" to="." method="_on_exit_button_pressed"]
-[connection signal="toggled" from="OptionMenu/OptionsVBoxContainer/FullScreenCheckButton" to="." method="_on_full_screen_check_button_toggled"]
 [connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer/DifficultyOptionButton" to="." method="_on_difficulty_option_button_item_selected"]
 [connection signal="item_selected" from="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton" to="." method="_on_detail_option_button_item_selected"]
+[connection signal="toggled" from="OptionMenu/OptionsVBoxContainer/ScreenHBoxContainer/FullScreenCheckButton" to="." method="_on_full_screen_check_button_toggled"]
 [connection signal="value_changed" from="OptionMenu/OptionsVBoxContainer/SfxHBoxContainer/SfxHSlider" to="." method="_on_sfx_h_slider_value_changed"]
 [connection signal="value_changed" from="OptionMenu/OptionsVBoxContainer/MusicHBoxContainer/MusicHSlider" to="." method="_on_music_h_slider_value_changed"]
 [connection signal="pressed" from="OptionMenu/OptionsVBoxContainer/BackButton" to="." method="_on_back_button_pressed"]

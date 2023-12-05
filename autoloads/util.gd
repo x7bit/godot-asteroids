@@ -58,24 +58,3 @@ func get_min_index_array(input_array: Array) -> Array[int]:
 		elif value == min_value:
 			min_idx_array.push_back(idx)
 	return min_idx_array
-
-func get_focus_index(control_array: Array[Control]) -> int:
-	for idx in control_array.size():
-		var control: Control = control_array[idx]
-		if control.has_focus():
-			return idx
-	return -1
-
-func get_interactive_control_array(container: BoxContainer) -> Array[Control]:
-	var clickable_array: Array[Control] = []
-	for child in container.get_children():
-		if child is BoxContainer:
-			for grandchild in child.get_children():
-				if grandchild is Control && is_control_interactive(grandchild):
-					clickable_array.push_back(grandchild)
-		elif child is Control && is_control_interactive(child):
-			clickable_array.push_back(child)
-	return clickable_array
-
-func is_control_interactive(control: Control) -> bool:
-	return control is Button || control is Slider
