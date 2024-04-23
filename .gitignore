@@ -10,6 +10,9 @@ export_presets.cfg
 *.translation
 *.tmp
 
+# Project specific ignores
+dist_web/
+
 # Windows
 Thumbs.db
 Thumbs.db:encryptable
