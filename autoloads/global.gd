@@ -58,6 +58,10 @@ var is_mobile: bool:
 		var os_name = OS.get_name()
 		return os_name == "Android" || os_name == "iOS"
 
+var is_web: bool:
+	get:
+		return OS.has_feature("web")
+
 var default_window_mode: WindowMode:
 	get:
 		if is_mobile:

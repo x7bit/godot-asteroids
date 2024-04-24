@@ -11,6 +11,7 @@ signal new_game(is_game_over: bool)
 @onready var credits_menu: Control = $CreditsMenu
 @onready var title_label: Label = $MainMenu/MainVBoxContainer/TitleLabel
 @onready var game_button: Button = $MainMenu/MainVBoxContainer/GameButton
+@onready var exit_button: Button = $MainMenu/MainVBoxContainer/ExitButton
 @onready var difficulty_options: OptionButton = $OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer/DifficultyOptionButton
 @onready var detail_options: OptionButton = $OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton
 @onready var fullscreen_check: CheckButton = $OptionMenu/OptionsVBoxContainer/ScreenHBoxContainer/FullScreenCheckButton
@@ -32,6 +33,8 @@ func _ready() -> void:
 	credits_menu.visible = false
 	if Global.is_mobile:
 		fullscreen_check.visible = false
+	if Global.is_web:
+		exit_button.visible = false
 	grab_focus()
 
 func _process(_delta: float) -> void:
