@@ -27,7 +27,7 @@ var face: MenuFace = MenuFace.MAIN
 
 func _ready() -> void:
 	process_mode = Node.PROCESS_MODE_ALWAYS
-	main_menu.visible = true
+	main_menu.visible = false
 	options_menu.visible = false
 	highscore_menu.visible = false
 	credits_menu.visible = false
@@ -35,10 +35,12 @@ func _ready() -> void:
 		fullscreen_check.visible = false
 	if Global.is_web:
 		exit_button.visible = false
-	grab_focus()
 
 func _process(_delta: float) -> void:
-	pass
+	if ParticleCache.loaded:
+		set_process(false)
+		main_menu.visible = true
+		grab_focus()
 
 func _on_game_button_pressed() -> void:
 	match face:
