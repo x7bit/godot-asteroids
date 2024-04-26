@@ -37,7 +37,7 @@ func _ready() -> void:
 		exit_button.visible = false
 
 func _process(_delta: float) -> void:
-	if ParticleCache.loaded:
+	if ResourcesPreload.loaded:
 		set_process(false)
 		main_menu.visible = true
 		grab_focus()

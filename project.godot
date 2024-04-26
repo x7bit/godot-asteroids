@@ -22,7 +22,7 @@ Global="*res://autoloads/global.gd"
 Util="*res://autoloads/util.gd"
 SfxController="*res://autoloads/sfx_controller.gd"
 MusicController="*res://autoloads/music_controller.gd"
-ParticleCache="*res://autoloads/particle_cache.gd"
+ResourcesPreload="*res://autoloads/resources_preload.gd"
 
 [display]
 
