@@ -137,6 +137,7 @@ func explode(laser: Laser) -> void:
 	queue_free()
 
 func bounce(asteroid: Asteroid) -> void:
+	#FIXME Improve bounce
 	var center_diff_vector: Vector2 = global_center - asteroid.global_center
 	var normal_vector: Vector2 = center_diff_vector.orthogonal().normalized()
 	reflect(normal_vector)
