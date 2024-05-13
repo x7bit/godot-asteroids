@@ -14,6 +14,8 @@ signal new_game(is_game_over: bool)
 @onready var exit_button: Button = $MainMenu/MainVBoxContainer/ExitButton
 @onready var difficulty_options: OptionButton = $OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer/DifficultyOptionButton
 @onready var detail_options: OptionButton = $OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton
+@onready var joypad_container: HBoxContainer = $OptionMenu/OptionsVBoxContainer/JoypadHBoxContainer
+@onready var joypad_options: OptionButton = $OptionMenu/OptionsVBoxContainer/JoypadHBoxContainer/JoypadOptionButton
 @onready var fullscreen_check: CheckButton = $OptionMenu/OptionsVBoxContainer/ScreenHBoxContainer/FullScreenCheckButton
 @onready var sfx_slider: HSlider = $OptionMenu/OptionsVBoxContainer/SfxHBoxContainer/SfxHSlider
 @onready var music_slider: HSlider = $OptionMenu/OptionsVBoxContainer/MusicHBoxContainer/MusicHSlider
@@ -35,6 +37,8 @@ func _ready() -> void:
 		fullscreen_check.visible = false
 	if Global.is_web:
 		exit_button.visible = false
+	Input.connect("joy_connection_changed", _on_joy_connection_changed)
+	update_joypads()
 
 func _process(_delta: float) -> void:
 	if ResourcesPreload.loaded:
@@ -88,6 +92,9 @@ func _on_detail_option_button_item_selected(index) -> void:
 	Global.detail = index
 	emit_signal("change_options")
 
+func _on_joypad_option_button_item_selected(index) -> void:
+	Global.joypad = joypad_options.get_item_id(index)
+
 func _on_sfx_h_slider_value_changed(value) -> void:
 	Global.sfx_volume = value
 	Global.sfx_volume_db = Util.volume_to_db(value)
@@ -114,10 +121,16 @@ func _on_back_button_pressed() -> void:
 	credits_menu.visible = false
 	grab_focus()
 
+func _on_joy_connection_changed(joypad: int, connected: bool) -> void:
+	update_joypads()
+	if joypad == Global.joypad && !connected:
+		joypad_options.selected = joypad_options.get_item_index(Global.NO_JOYPAD)
+
 func update() -> void:
 	fullscreen_check.button_pressed = Global.window_mode == Global.WindowMode.FULLSCREEN
 	difficulty_options.selected = Global.difficulty
 	detail_options.selected = Global.detail
+	joypad_options.selected = joypad_options.get_item_index(Global.joypad)
 	sfx_slider.value = Global.sfx_volume
 	music_slider.value = Global.music_volume
 	easy_score.text = str(Global.high_scores[Global.Difficulty.EASY])
@@ -152,3 +165,15 @@ func grab_focus() -> void:
 		credits_back_button.grab_focus()
 	else:
 		game_button.grab_focus()
+
+func update_joypads() -> void:
+	var joypads = Input.get_connected_joypads()
+	if joypads.size() > 0:
+		joypad_container.visible = true
+		joypad_options.clear()
+		joypad_options.add_item("None", Global.NO_JOYPAD)
+		for joypad in joypads:
+			joypad_options.add_item(Input.get_joy_name(joypad), joypad)
+		joypad_options.selected = joypad_options.get_item_index(Global.joypad)
+	else:
+		joypad_container.visible = false

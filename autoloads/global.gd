@@ -2,6 +2,7 @@ extends Node
 
 const CONFIG_FILE := "user://asteroids.cfg"
 const POWERUP_POINTS := 3000
+const NO_JOYPAD := -9
 
 enum WindowMode {WINDOW, FULLSCREEN}
 enum Detail {LOW, MEDIUM, HIGH}
@@ -10,6 +11,7 @@ enum Difficulty {EASY, NORMAL, HARD}
 var window_mode := WindowMode.WINDOW
 var difficulty := Difficulty.NORMAL
 var detail := Detail.HIGH
+var joypad: int = NO_JOYPAD
 var sfx_volume: float = 1.0
 var sfx_volume_db: float = 0.0
 var music_volume: float = 0.8
@@ -83,6 +85,7 @@ func load_config() -> void:
 		window_mode = default_window_mode
 		difficulty = Difficulty.NORMAL
 		detail = Detail.HIGH
+		joypad = NO_JOYPAD
 		sfx_volume = 1.0
 		sfx_volume_db = 0.0
 		music_volume = 0.8
@@ -95,6 +98,8 @@ func load_config() -> void:
 		window_mode = config.get_value("options", "window_mode", default_window_mode)
 		difficulty = config.get_value("options", "difficulty", Difficulty.NORMAL)
 		detail = config.get_value("options", "detail", Detail.HIGH)
+		var _joypad = config.get_value("options", "joypad", NO_JOYPAD)
+		joypad = _joypad if Input.get_connected_joypads().has(_joypad) else NO_JOYPAD
 		sfx_volume = config.get_value("options", "sfx_volume", 1.0)
 		sfx_volume_db = Util.volume_to_db(sfx_volume)
 		music_volume = config.get_value("options", "music_volume", 0.8)
@@ -108,6 +113,7 @@ func save_config() -> void:
 	config.set_value("options", "window_mode", window_mode)
 	config.set_value("options", "difficulty", difficulty)
 	config.set_value("options", "detail", detail)
+	config.set_value("options", "joypad", joypad)
 	config.set_value("options", "sfx_volume", sfx_volume)
 	config.set_value("options", "music_volume", music_volume)
 	config.set_value("highscore", "easy", high_scores[Difficulty.EASY])

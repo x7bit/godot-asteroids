@@ -32,9 +32,12 @@ var rate_of_laser: float = RATE_OF_LASER
 
 var alive: bool = true
 var spawn_pos: Vector2 = Vector2.ZERO
+var laser_input_digital: bool = false
+var laser_input_analog: bool = false
 var laser_cooldown: bool = false
 var muzzle_idx: int = 0
-var thrust_forward: bool = false
+var thrust_forward_digital: bool = false
+var thrust_forward_analog: bool = false
 var thrust_alfa: float = 0.0
 
 var move_angle: float:
@@ -42,23 +45,29 @@ var move_angle: float:
 		return Util.get_rotation_based_up_vector(velocity)
 
 func _ready() -> void:
-	thrust_forward = false
+	thrust_forward_digital = false
+	thrust_forward_analog = false
 	thrust_alfa = 0.0
 	thrusts[0].modulate.a = thrust_alfa
 	thrusts[1].modulate.a = thrust_alfa
 
 func _process(delta: float) -> void:
 	if !alive || !Global.game_started: return
+	#DIGITAL INPUTS
 	if Input.is_action_just_pressed("move_forward"):
-		thrust_forward = true
+		thrust_forward_digital = true
 	if Input.is_action_just_released("move_forward"):
-		thrust_forward = false
-	if Input.is_action_pressed("shoot") && !laser_cooldown && !Global.next_round_pause:
-		laser_cooldown = true
-		shoot()
-		await get_tree().create_timer(rate_of_laser).timeout
-		laser_cooldown = false
-	if thrust_forward:
+		thrust_forward_digital = false
+	if Input.is_action_just_pressed("shoot"):
+		laser_input_digital = true
+	if Input.is_action_just_released("shoot"):
+		laser_input_digital = false
+	#ANALOG INPUTS
+	if Global.joypad >= 0:
+		thrust_forward_analog = Input.get_joy_axis(Global.joypad, JOY_AXIS_LEFT_Y) < -0.2
+		laser_input_analog = Input.get_joy_axis(Global.joypad, JOY_AXIS_TRIGGER_RIGHT) > 0.5
+	#THRUSTS FADE IN/OUT
+	if thrust_forward_digital || thrust_forward_analog:
 		SfxController.play_in_unique_player(SfxController.Sfx.THRUST, get_instance_id())
 		if thrust_alfa < 1.0:
 			thrust_alfa = minf(thrust_alfa + (2.14 * delta), 1.0)
@@ -70,6 +79,12 @@ func _process(delta: float) -> void:
 			thrust_alfa = maxf(thrust_alfa - (3.57 * delta), 0.0)
 			thrusts[0].modulate.a = thrust_alfa
 			thrusts[1].modulate.a = thrust_alfa
+	#LASER SHOOT
+	if (laser_input_digital || laser_input_analog) && !laser_cooldown && !Global.next_round_pause:
+		laser_cooldown = true
+		shoot()
+		await get_tree().create_timer(rate_of_laser).timeout
+		laser_cooldown = false
 
 func _physics_process(delta: float) -> void:
 	if !alive || !Global.game_started: return
@@ -77,16 +92,36 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func move(delta: float) -> void:
+	var y_move: bool = false
+	var x_move: bool = false
+	#DIGITAL INPUTS
 	if Input.is_action_pressed("move_forward"):
 		velocity += Vector2(0, -acceleration).rotated(rotation)
-	if Input.is_action_pressed("move_backward"):
+		y_move = true
+	elif Input.is_action_pressed("move_backward"):
 		velocity += Vector2(0, deceleration).rotated(rotation)
+		y_move = true
 	if Input.is_action_pressed("rotate_left"):
 		rotate(deg_to_rad(-rotation_speed * delta))
-	if Input.is_action_pressed("rotate_right"):
+		x_move = true
+	elif Input.is_action_pressed("rotate_right"):
 		rotate(deg_to_rad(rotation_speed * delta))
+		x_move = true
+	#ANALOG INPUTS
+	if Global.joypad >= 0:
+		if !y_move:
+			var y_axis = Input.get_joy_axis(Global.joypad, JOY_AXIS_LEFT_Y)
+			if y_axis < -0.2 || y_axis > 0.2:
+				velocity += Vector2(0, y_axis * acceleration).rotated(rotation)
+				y_move = true
+		if !x_move:
+			var x_axis = Input.get_joy_axis(Global.joypad, JOY_AXIS_LEFT_X)
+			if x_axis < -0.2 || x_axis > 0.2:
+				rotate(deg_to_rad(x_axis * rotation_speed * delta))
+				x_move = true
+	#VELOCITY NORMALIZATION
 	velocity = velocity.limit_length(max_speed).move_toward(Vector2.ZERO, GRAVITY)
-	##OFF SCREEN TRANSITIONS
+	#OFF SCREEN TRANSITIONS
 	var screen_size: Vector2 = get_viewport_rect().size
 	var player_half_size: Vector2 = Util.get_poly_rect(cpoly.get_polygon(), scale).size / 2
 	var indicator_prev_position: Vector2 = indicator.global_position
@@ -119,7 +154,8 @@ func die() -> void:
 		velocity = Vector2.ZERO
 		rotation = 0
 		SfxController.stop_in_unique_player(SfxController.Sfx.THRUST, get_instance_id())
-		thrust_forward = false
+		thrust_forward_digital = false
+		thrust_forward_analog = false
 		thrust_alfa = 0.0
 		thrusts[0].modulate.a = thrust_alfa
 		thrusts[1].modulate.a = thrust_alfa
