@@ -125,12 +125,16 @@ theme_override_font_sizes/font_size = 32
 text = "DIFFICULTY:"
 
 [node name="DifficultyOptionButton" type="OptionButton" parent="OptionMenu/OptionsVBoxContainer/DifficultyHBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 focus_neighbor_top = NodePath("../../BackButton")
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
+text_overrun_behavior = 3
+clip_text = true
 item_count = 3
 selected = 1
+fit_to_longest_item = false
 popup/item_0/text = "EASY"
 popup/item_0/id = 0
 popup/item_1/text = "NORMAL"
@@ -150,11 +154,15 @@ theme_override_font_sizes/font_size = 32
 text = "DETAIL:"
 
 [node name="DetailOptionButton" type="OptionButton" parent="OptionMenu/OptionsVBoxContainer/DetailHBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
+text_overrun_behavior = 3
+clip_text = true
 item_count = 3
 selected = 2
+fit_to_longest_item = false
 popup/item_0/text = "LOW"
 popup/item_0/id = 0
 popup/item_1/text = "MEDIUM"
@@ -174,9 +182,13 @@ theme_override_font_sizes/font_size = 32
 text = "JOYPAD:"
 
 [node name="JoypadOptionButton" type="OptionButton" parent="OptionMenu/OptionsVBoxContainer/JoypadHBoxContainer"]
+custom_minimum_size = Vector2(240, 0)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_nvajy")
 theme_override_font_sizes/font_size = 32
+text_overrun_behavior = 3
+clip_text = true
+fit_to_longest_item = false
 
 [node name="ScreenHBoxContainer" type="HBoxContainer" parent="OptionMenu/OptionsVBoxContainer"]
 layout_mode = 2
