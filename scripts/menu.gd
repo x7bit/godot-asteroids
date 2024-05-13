@@ -16,6 +16,7 @@ signal new_game(is_game_over: bool)
 @onready var detail_options: OptionButton = $OptionMenu/OptionsVBoxContainer/DetailHBoxContainer/DetailOptionButton
 @onready var joypad_container: HBoxContainer = $OptionMenu/OptionsVBoxContainer/JoypadHBoxContainer
 @onready var joypad_options: OptionButton = $OptionMenu/OptionsVBoxContainer/JoypadHBoxContainer/JoypadOptionButton
+@onready var fullscreen_container: HBoxContainer = $OptionMenu/OptionsVBoxContainer/ScreenHBoxContainer
 @onready var fullscreen_check: CheckButton = $OptionMenu/OptionsVBoxContainer/ScreenHBoxContainer/FullScreenCheckButton
 @onready var sfx_slider: HSlider = $OptionMenu/OptionsVBoxContainer/SfxHBoxContainer/SfxHSlider
 @onready var music_slider: HSlider = $OptionMenu/OptionsVBoxContainer/MusicHBoxContainer/MusicHSlider
@@ -34,7 +35,7 @@ func _ready() -> void:
 	highscore_menu.visible = false
 	credits_menu.visible = false
 	if Global.is_mobile:
-		fullscreen_check.visible = false
+		fullscreen_container.visible = false
 	if Global.is_web:
 		exit_button.visible = false
 	Input.connect("joy_connection_changed", _on_joy_connection_changed)
