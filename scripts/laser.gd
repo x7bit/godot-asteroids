@@ -32,6 +32,11 @@ func _process(delta: float) -> void:
 		elif (global_position.x - laser_half_size.x) > screen_size.x: #RIGHT
 			global_position.x = -laser_half_size.x
 
+func _on_body_entered(body: Node2D):
+	if body is Asteroid && !exploded:
+		body.explode(self)
+		explode_and_free(body.explosion_scale)
+
 func explode_and_free(explosion_scale: float) -> void:
 	exploded = true
 	laser_sprite.visible = false

@@ -18,7 +18,7 @@ func _process(_delta: float) -> void:
 
 func update() -> void:
 	score_label.text = "SCORE: " + str(Global.score)
-	var lives_diff := Global.lives - lives_container.get_children().size()
+	var lives_diff := Global.lives - lives_container.get_child_count()
 	if lives_diff != 0:
 		if lives_diff > 0:
 			for i in lives_diff:

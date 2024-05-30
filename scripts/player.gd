@@ -89,7 +89,11 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if !alive || !Global.game_started: return
 	move(delta)
-	move_and_slide()
+	if move_and_slide():
+		for i in get_slide_collision_count():
+			if get_slide_collision(i).get_collider() is Asteroid:
+				die()
+				break
 
 func move(delta: float) -> void:
 	var y_move: bool = false
@@ -125,7 +129,6 @@ func move(delta: float) -> void:
 	var screen_size: Vector2 = get_viewport_rect().size
 	var player_half_size: Vector2 = Util.get_poly_rect(cpoly.get_polygon(), scale).size / 2
 	var indicator_prev_position: Vector2 = indicator.global_position
-	indicator.parent_move_angle = move_angle
 	#POSITION
 	if (global_position.y + player_half_size.y) < 0: #UP
 		global_position.y = screen_size.y + player_half_size.y
@@ -154,6 +157,8 @@ func die() -> void:
 		velocity = Vector2.ZERO
 		rotation = 0
 		SfxController.stop_in_unique_player(SfxController.Sfx.THRUST, get_instance_id())
+		laser_input_digital = false
+		laser_input_analog = false
 		thrust_forward_digital = false
 		thrust_forward_analog = false
 		thrust_alfa = 0.0

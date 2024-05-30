@@ -2,7 +2,7 @@ class_name PlayerSpawnArea extends Area2D
 
 var is_empty: bool:
 	get:
-		return !has_overlapping_areas()
+		return !has_overlapping_bodies()
 
 func _ready() -> void:
 	pass
