@@ -89,7 +89,7 @@ func _ready() -> void:
 	center_offset = cshape.position.rotated(rotation)
 	indicator.scale = indicator_scale
 	indicator.global_rotation = initial_move_angle
-	apply_central_impulse(randf_range(max_speed * 0.6, max_speed) * Vector2.UP.rotated(initial_move_angle))
+	freeze = true
 
 func _integrate_forces(state: PhysicsDirectBodyState2D):
 	#MAX SPEED ClAMP
@@ -116,8 +116,9 @@ func _process(delta: float) -> void:
 	if alfa < 1.0:
 		alfa = minf(alfa + 1.5 * delta, 1.0)
 		sprite.modulate.a = alfa
-	else:
-		pass
+	elif freeze:
+		freeze = false
+		apply_central_impulse(randf_range(max_speed * 0.6, max_speed) * Vector2.UP.rotated(initial_move_angle))
 
 func _on_body_entered(body: Node2D) -> void:
 	if body is Player:
