@@ -17,7 +17,7 @@ func _ready() -> void:
 	pass
 
 func _process(_delta: float) -> void:
-	if Global.game_started && asteroids.get_children().size() == 0:
+	if Global.game_started && asteroids.get_child_count() == 0:
 		next_round(false)
 
 func _on_player_laser_shoot(laser: Laser) -> void:
