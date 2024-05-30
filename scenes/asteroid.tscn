@@ -10,7 +10,7 @@
 collision_layer = 4
 collision_mask = 14
 physics_material_override = ExtResource("1_jt4un")
-max_contacts_reported = 1
+max_contacts_reported = 2
 contact_monitor = true
 script = ExtResource("1_j7m0b")
 

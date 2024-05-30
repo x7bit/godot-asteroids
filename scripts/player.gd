@@ -125,7 +125,6 @@ func move(delta: float) -> void:
 	var screen_size: Vector2 = get_viewport_rect().size
 	var player_half_size: Vector2 = Util.get_poly_rect(cpoly.get_polygon(), scale).size / 2
 	var indicator_prev_position: Vector2 = indicator.global_position
-	indicator.parent_move_angle = move_angle
 	#POSITION
 	if (global_position.y + player_half_size.y) < 0: #UP
 		global_position.y = screen_size.y + player_half_size.y

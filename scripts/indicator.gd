@@ -3,7 +3,6 @@ class_name Indicator extends Node2D
 @onready var sprite: Sprite2D = $Sprite2D
 
 var fixed_position: Vector2 = Vector2.ZERO
-var parent_move_angle: float = 0.0
 var alfa: float = 1.0
 
 var radius: float:
@@ -44,7 +43,7 @@ func fade_out(delta: float) -> void:
 			visible = false
 
 func get_position_to_parent(screen_size: Vector2) -> Vector2:
-	var move_angle = wrapf(parent_move_angle, 0, 2 * PI)
+	var move_angle = wrapf(global_rotation, 0, 2 * PI)
 	var margin: float = radius + 4.0
 	var x: float = margin
 	var y: float = margin

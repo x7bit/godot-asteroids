@@ -88,7 +88,7 @@ func _ready() -> void:
 	rotation = randf_range(0, 2 * PI)
 	center_offset = cshape.position.rotated(rotation)
 	indicator.scale = indicator_scale
-	indicator.rotate(-rotation + initial_move_angle)
+	indicator.global_rotation = initial_move_angle
 	apply_central_impulse(randf_range(max_speed * 0.6, max_speed) * Vector2.UP.rotated(initial_move_angle))
 
 func _integrate_forces(state: PhysicsDirectBodyState2D):
@@ -98,7 +98,7 @@ func _integrate_forces(state: PhysicsDirectBodyState2D):
 	#OFF SCREEN TRANSITIONS
 	var screen_size: Vector2 = get_viewport_rect().size
 	var indicator_prev_position: Vector2 = indicator.global_position
-	indicator.parent_move_angle = move_angle
+	indicator.global_rotation = move_angle
 	if (global_position.y + radius) < 0: #UP
 		global_position.y = screen_size.y + radius
 		indicator.global_position = indicator_prev_position
