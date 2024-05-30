@@ -89,7 +89,11 @@ func _process(delta: float) -> void:
 func _physics_process(delta: float) -> void:
 	if !alive || !Global.game_started: return
 	move(delta)
-	move_and_slide()
+	if move_and_slide():
+		for i in get_slide_collision_count():
+			if get_slide_collision(i).get_collider() is Asteroid:
+				die()
+				break
 
 func move(delta: float) -> void:
 	var y_move: bool = false

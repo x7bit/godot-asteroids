@@ -121,8 +121,6 @@ func _process(delta: float) -> void:
 		apply_central_impulse(randf_range(max_speed * 0.6, max_speed) * Vector2.UP.rotated(initial_move_angle))
 
 func _on_body_entered(body: Node2D) -> void:
-	if body is Player:
-		body.die()
 	if body is Asteroid:
 		if is_bounced:
 			is_bounced = false
