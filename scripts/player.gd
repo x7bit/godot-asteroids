@@ -153,6 +153,8 @@ func die() -> void:
 		velocity = Vector2.ZERO
 		rotation = 0
 		SfxController.stop_in_unique_player(SfxController.Sfx.THRUST, get_instance_id())
+		laser_input_digital = false
+		laser_input_analog = false
 		thrust_forward_digital = false
 		thrust_forward_analog = false
 		thrust_alfa = 0.0
