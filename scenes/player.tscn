@@ -19,7 +19,7 @@ glow_blend_mode = 1
 position = Vector2(640, 360)
 scale = Vector2(0.5, 0.5)
 collision_layer = 2
-collision_mask = 5
+collision_mask = 4
 motion_mode = 1
 script = ExtResource("1_rlokd")
 
