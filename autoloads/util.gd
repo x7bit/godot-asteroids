@@ -36,7 +36,7 @@ func get_rotation_based_up_vector(vector: Vector2) -> float:
 func get_explosion_rotation(laser: Laser, asteroid: Asteroid) -> float:
 	if asteroid.size == Asteroid.AsteroidSize.SMALL: return 0.0
 	var laser_vector = Vector2.UP.rotated(laser.rotation) * Laser.SPEED
-	var asteroid_vector = Vector2.UP.rotated(asteroid.move_angle) * asteroid.speed * asteroid.mass_multiplier
+	var asteroid_vector = Vector2.UP.rotated(asteroid.move_angle) * asteroid.linear_velocity.length() * asteroid.mass_multiplier
 	return get_rotation_based_up_vector(laser_vector + asteroid_vector)
 
 func is_in_screen_visible(sprite_position: Vector2, screen_size: Vector2) -> bool:

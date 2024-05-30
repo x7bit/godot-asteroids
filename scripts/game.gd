@@ -101,11 +101,9 @@ func spawn_twin_asteroids(pos: Vector2, new_rotation: float, size: Asteroid.Aste
 	var asteroid2 := AsteroidScene.instantiate()
 	var rotation_offset := randf_range(PI / 8, PI / 4)
 	asteroid1.init(pos, new_rotation + rotation_offset, size)
-	asteroid1.paired_ids.push_back(asteroid2.id)
 	asteroid1.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid1)
 	asteroid2.init(pos, new_rotation - rotation_offset, size)
-	asteroid2.paired_ids.push_back(asteroid1.id)
 	asteroid2.connect("exploded", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid2)
 

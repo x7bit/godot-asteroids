@@ -30,3 +30,5 @@ process_material = ExtResource("3_7n4to")
 lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
