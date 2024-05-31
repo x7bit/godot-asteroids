@@ -35,7 +35,7 @@
 
 ### Deploy it in Cloudflare
 
-Compressed wasm required due to 25 Mb file size limitation. Additionally, you must create a file **_headers** with the following:
+Compressed wasm required due to 25 Mb file size limitation. Additionally, you must rename **asteroids.html** file to **index.html**, and you must create a file **_headers** with the following:
 ```
 /*
 	Access-Control-Allow-Origin: *
