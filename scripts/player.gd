@@ -115,8 +115,11 @@ func move(delta: float) -> void:
 	if Global.joypad >= 0:
 		if !y_move:
 			var y_axis = Input.get_joy_axis(Global.joypad, JOY_AXIS_LEFT_Y)
-			if y_axis < -0.2 || y_axis > 0.2:
+			if y_axis < -0.2:
 				velocity += Vector2(0, y_axis * acceleration).rotated(rotation)
+				y_move = true
+			elif y_axis > 0.2:
+				velocity += Vector2(0, y_axis * deceleration).rotated(rotation)
 				y_move = true
 		if !x_move:
 			var x_axis = Input.get_joy_axis(Global.joypad, JOY_AXIS_LEFT_X)
