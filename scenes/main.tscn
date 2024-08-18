@@ -15,6 +15,6 @@ script = ExtResource("1_efve0")
 [node name="Starfield" parent="." instance=ExtResource("3_r7s0j")]
 z_index = -10
 
-[connection signal="change_options" from="Menu" to="." method="_on_menu_change_options"]
-[connection signal="new_game" from="Menu" to="." method="_on_menu_new_game"]
-[connection signal="game_over" from="Game" to="." method="_on_game_over"]
+[connection signal="change_options_signal" from="Menu" to="." method="_on_menu_change_options"]
+[connection signal="new_game_signal" from="Menu" to="." method="_on_menu_new_game"]
+[connection signal="game_over_signal" from="Game" to="." method="_on_game_over"]

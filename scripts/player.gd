@@ -1,8 +1,8 @@
 class_name Player extends CharacterBody2D
 
-signal laser_shoot(laser: Laser)
-signal poweruped(type: PowerUp.Type)
-signal died()
+signal laser_shoot_singal(laser: Laser)
+signal poweruped_signal(type: PowerUp.Type)
+signal died_signal()
 
 const ROTATION_SPEED: float = 140.0
 const MAX_SPEED: float = 320.0
@@ -151,7 +151,7 @@ func shoot() -> void:
 	var laser := LaserScene.instantiate()
 	laser.global_position = muzzle.global_position
 	laser.rotation = rotation
-	emit_signal("laser_shoot", laser)
+	laser_shoot_singal.emit(laser)
 	muzzle_idx = (muzzle_idx + 1) % 2
 
 func die() -> void:
@@ -173,7 +173,7 @@ func die() -> void:
 		for i in 3:
 			die_particles[i].global_position = die_pos
 			die_particles[i].emitting = true
-		emit_signal("died")
+		died_signal.emit()
 
 func powerup(type: PowerUp.Type) -> void:
 	match type:
@@ -185,7 +185,7 @@ func powerup(type: PowerUp.Type) -> void:
 			max_speed *= 1.15
 			acceleration *= 1.15
 			deceleration *= 1.15
-	emit_signal("poweruped", type)
+	poweruped_signal.emit(type)
 
 func pre_respawn() -> void:
 	if !alive:

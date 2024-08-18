@@ -1,6 +1,6 @@
 class_name Game extends Node2D
 
-signal game_over()
+signal game_over_signal()
 
 const PowerupScene: PackedScene = preload("res://scenes/power_up.tscn")
 const AsteroidScene: PackedScene = preload("res://scenes/asteroid.tscn")
@@ -49,7 +49,7 @@ func _on_player_died() -> void:
 		player.respawn()
 		hud.hide_round()
 	else:
-		emit_signal("game_over")
+		game_over_signal.emit()
 
 func _on_asteroid_exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int) -> void:
 	SfxController.play_in_unique_player(SfxController.Sfx.HIT)
@@ -101,16 +101,16 @@ func spawn_twin_asteroids(pos: Vector2, new_rotation: float, size: Asteroid.Aste
 	var asteroid2 := AsteroidScene.instantiate()
 	var rotation_offset := randf_range(PI / 8, PI / 4)
 	asteroid1.init(pos, new_rotation + rotation_offset, size)
-	asteroid1.connect("exploded", _on_asteroid_exploded)
+	asteroid1.connect("exploded_signal", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid1)
 	asteroid2.init(pos, new_rotation - rotation_offset, size)
-	asteroid2.connect("exploded", _on_asteroid_exploded)
+	asteroid2.connect("exploded_signal", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid2)
 
 func spawn_asteroid(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize) -> void:
 	var asteroid := AsteroidScene.instantiate()
 	asteroid.init(pos, new_rotation, size)
-	asteroid.connect("exploded", _on_asteroid_exploded)
+	asteroid.connect("exploded_signal", _on_asteroid_exploded)
 	asteroids.call_deferred("add_child", asteroid)
 
 func spawn_powerup() -> void:

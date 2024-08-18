@@ -2,8 +2,8 @@ class_name UIMenu extends CanvasLayer
 
 enum MenuFace {MAIN, PAUSE, GAMEOVER}
 
-signal change_options()
-signal new_game(is_game_over: bool)
+signal change_options_signal()
+signal new_game_signal(is_game_over: bool)
 
 @onready var main_menu: Control = $MainMenu
 @onready var options_menu: Control = $OptionMenu
@@ -52,7 +52,7 @@ func _on_game_button_pressed() -> void:
 		MenuFace.MAIN: #NEW GAME
 			Global.game_started = true
 			MusicController.stop_music_immediate(false)
-			emit_signal("new_game", false)
+			new_game_signal.emit(false)
 		MenuFace.PAUSE: #RESUME
 			get_tree().paused = false
 			MusicController.stop_music_immediate(false)
@@ -60,7 +60,7 @@ func _on_game_button_pressed() -> void:
 		MenuFace.GAMEOVER: #TRY AGAIN
 			Global.game_started = true
 			MusicController.stop_music_immediate(false)
-			emit_signal("new_game", true)
+			new_game_signal.emit(true)
 	visible = false
 	Global.game_menu = false
 
@@ -84,14 +84,14 @@ func _on_exit_button_pressed() -> void:
 
 func _on_full_screen_check_button_toggled(button_pressed) -> void:
 	Global.window_mode = Global.WindowMode.FULLSCREEN if button_pressed else Global.WindowMode.WINDOW
-	emit_signal("change_options")
+	change_options_signal.emit()
 
 func _on_difficulty_option_button_item_selected(index) -> void:
 	Global.difficulty = index
 
 func _on_detail_option_button_item_selected(index) -> void:
 	Global.detail = index
-	emit_signal("change_options")
+	change_options_signal.emit()
 
 func _on_joypad_option_button_item_selected(index) -> void:
 	Global.joypad = joypad_options.get_item_id(index)

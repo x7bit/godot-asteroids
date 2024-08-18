@@ -25,6 +25,6 @@ position = Vector2(640, 360)
 
 [node name="PlayerSpawnArea" parent="PlayerSpawnPos" instance=ExtResource("7_scvdi")]
 
-[connection signal="died" from="Player" to="." method="_on_player_died"]
-[connection signal="laser_shoot" from="Player" to="." method="_on_player_laser_shoot"]
-[connection signal="poweruped" from="Player" to="." method="_on_player_poweruped"]
+[connection signal="died_signal" from="Player" to="." method="_on_player_died"]
+[connection signal="laser_shoot_singal" from="Player" to="." method="_on_player_laser_shoot"]
+[connection signal="poweruped_signal" from="Player" to="." method="_on_player_poweruped"]

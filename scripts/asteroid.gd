@@ -2,7 +2,7 @@ class_name Asteroid extends RigidBody2D
 
 enum AsteroidSize {SMALL, MEDIUM, LARGE}
 
-signal exploded(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int)
+signal exploded_signal(pos: Vector2, new_rotation: float, size: Asteroid.AsteroidSize, points: int)
 
 const BASE_SPEED: float = 50.0
 
@@ -136,5 +136,5 @@ func init(_pos: Vector2, _move_angle: float, _size: Asteroid.AsteroidSize) -> vo
 
 func explode(laser: Laser) -> void:
 	var new_rotation = Util.get_explosion_rotation(laser, self)
-	emit_signal("exploded", global_position, new_rotation, size, points)
+	exploded_signal.emit(global_position, new_rotation, size, points)
 	queue_free()
