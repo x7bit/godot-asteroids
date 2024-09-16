@@ -1,4 +1,9 @@
-[gd_resource type="ParticleProcessMaterial" format=3 uid="uid://ccoyfgsmx4wy3"]
+[gd_resource type="ParticleProcessMaterial" load_steps=3 format=3 uid="uid://ccoyfgsmx4wy3"]
+
+[ext_resource type="Gradient" uid="uid://cfft70dy2htc4" path="res://resources/starfield_gradient.tres" id="1_h6a1r"]
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_4lnxe"]
+gradient = ExtResource("1_h6a1r")
 
 [resource]
 particle_flag_disable_z = true
@@ -9,3 +14,4 @@ initial_velocity_min = -10.0
 initial_velocity_max = -10.0
 gravity = Vector3(0, 0, 0)
 color = Color(1, 1, 0.980392, 1)
+color_initial_ramp = SubResource("GradientTexture1D_4lnxe")
