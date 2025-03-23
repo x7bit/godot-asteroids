@@ -1,9 +1,9 @@
 [gd_scene load_steps=3 format=3 uid="uid://dtapedwf5bfad"]
 
-[ext_resource type="Script" path="res://scripts/player_spawn_area.gd" id="1_04byl"]
+[ext_resource type="Script" uid="uid://b7adjj2lqldca" path="res://scripts/player_spawn_area.gd" id="1_04byl"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_orwai"]
-radius = 125.0
+radius = 110.0
 
 [node name="PlayerSpawnArea" type="Area2D"]
 collision_layer = 16

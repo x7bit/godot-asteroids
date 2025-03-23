@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=3 uid="uid://c3jhgad74myma"]
 
 [ext_resource type="Texture2D" uid="uid://byl5v6ts0xaq" path="res://assets/textures/player_ship.png" id="1_1mnyh"]
-[ext_resource type="Script" path="res://scripts/player.gd" id="1_rlokd"]
+[ext_resource type="Script" uid="uid://da8xg8rqhk2bh" path="res://scripts/player.gd" id="1_rlokd"]
 [ext_resource type="Texture2D" uid="uid://c17yllrcrp0q7" path="res://assets/textures/thrust.png" id="2_1232q"]
 [ext_resource type="PackedScene" uid="uid://bj8l8u3a63ufp" path="res://scenes/indicator.tscn" id="4_ofb6e"]
 [ext_resource type="Material" uid="uid://di6nvet7jhi37" path="res://resources/fire1_particle_material.tres" id="5_4ny6w"]
@@ -16,8 +16,6 @@ glow_enabled = true
 glow_blend_mode = 1
 
 [node name="Player" type="CharacterBody2D"]
-position = Vector2(640, 360)
-scale = Vector2(0.5, 0.5)
 collision_layer = 2
 collision_mask = 4
 motion_mode = 1
@@ -56,28 +54,28 @@ scale = Vector2(0.5, 0.5)
 [node name="ExplosionParticles" type="GPUParticles2D" parent="DieParticles"]
 emitting = false
 amount = 70
-process_material = ExtResource("5_upsof")
 lifetime = 0.7
 one_shot = true
 explosiveness = 1.0
+process_material = ExtResource("5_upsof")
 
 [node name="Fire1Particles" type="GPUParticles2D" parent="DieParticles"]
 modulate = Color(3, 1, 1, 1)
 emitting = false
-process_material = ExtResource("5_4ny6w")
 texture = ExtResource("6_4k88w")
 lifetime = 0.5
 one_shot = true
 explosiveness = 0.1
+process_material = ExtResource("5_4ny6w")
 
 [node name="Fire2Particles" type="GPUParticles2D" parent="DieParticles"]
 modulate = Color(2.5, 1.5, 1, 1)
 emitting = false
-process_material = ExtResource("7_7h6r2")
 texture = ExtResource("7_a2wav")
 lifetime = 0.5
 one_shot = true
 explosiveness = 0.1
+process_material = ExtResource("7_7h6r2")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="DieParticles"]
 environment = SubResource("Environment_q32vf")

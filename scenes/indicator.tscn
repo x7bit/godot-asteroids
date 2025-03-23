@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://bj8l8u3a63ufp"]
 
 [ext_resource type="Texture2D" uid="uid://ct7glth04kf52" path="res://assets/textures/arrowhead.png" id="1_4wkxy"]
-[ext_resource type="Script" path="res://scripts/indicator.gd" id="1_co1fy"]
+[ext_resource type="Script" uid="uid://b5deemfk6mk4x" path="res://scripts/indicator.gd" id="1_co1fy"]
 
 [node name="Indicator" type="Node2D"]
 script = ExtResource("1_co1fy")

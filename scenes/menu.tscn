@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://chk7xkp2mqp7v"]
 
-[ext_resource type="Script" path="res://scripts/menu.gd" id="1_by63g"]
+[ext_resource type="Script" uid="uid://dhbro7ojevc6f" path="res://scripts/menu.gd" id="1_by63g"]
 [ext_resource type="FontFile" uid="uid://dp5yd0a61l0gb" path="res://assets/fonts/kenvector_future_thin.ttf" id="2_nvajy"]
 
 [node name="Menu" type="CanvasLayer"]
@@ -136,6 +136,7 @@ selected = 1
 fit_to_longest_item = false
 item_count = 3
 popup/item_0/text = "EASY"
+popup/item_0/id = 0
 popup/item_1/text = "NORMAL"
 popup/item_1/id = 1
 popup/item_2/text = "HARD"
@@ -163,6 +164,7 @@ selected = 2
 fit_to_longest_item = false
 item_count = 3
 popup/item_0/text = "LOW"
+popup/item_0/id = 0
 popup/item_1/text = "MEDIUM"
 popup/item_1/id = 1
 popup/item_2/text = "HIGH"

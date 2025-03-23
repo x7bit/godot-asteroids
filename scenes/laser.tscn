@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://co6qgpxf6ajve"]
 
-[ext_resource type="Script" path="res://scripts/laser.gd" id="1_ylkm4"]
+[ext_resource type="Script" uid="uid://ddv8jb5404hwb" path="res://scripts/laser.gd" id="1_ylkm4"]
 [ext_resource type="Texture2D" uid="uid://beb6nh8es3p2q" path="res://assets/textures/laser.png" id="2_0btpb"]
 [ext_resource type="Material" uid="uid://dq75s6nkkr2wh" path="res://resources/laser_explosion_particle_material.tres" id="3_7n4to"]
 
@@ -26,9 +26,9 @@ shape = SubResource("CapsuleShape2D_rat0t")
 position = Vector2(0, -32)
 emitting = false
 amount = 32
-process_material = ExtResource("3_7n4to")
 lifetime = 0.5
 one_shot = true
 explosiveness = 1.0
+process_material = ExtResource("3_7n4to")
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]

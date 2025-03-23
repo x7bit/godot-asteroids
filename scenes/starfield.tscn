@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://w3fpkkpjm0p6"]
 
-[ext_resource type="Script" path="res://scripts/starfield.gd" id="1_u838b"]
+[ext_resource type="Script" uid="uid://cg4voanpdetv3" path="res://scripts/starfield.gd" id="1_u838b"]
 [ext_resource type="Material" uid="uid://b1c3a3jiadcum" path="res://resources/starfield_front_particle_material.tres" id="2_f4hgy"]
 [ext_resource type="Texture2D" uid="uid://bmmmfhlqdw70m" path="res://assets/textures/star_glow.png" id="3_oax4r"]
 [ext_resource type="Material" uid="uid://hj2c0yff1l2u" path="res://resources/starfield_middle_particle_material.tres" id="4_cvci4"]
@@ -12,22 +12,22 @@ script = ExtResource("1_u838b")
 [node name="StarfieldFront" type="GPUParticles2D" parent="."]
 position = Vector2(1280, 360)
 amount = 30
-process_material = ExtResource("2_f4hgy")
 texture = ExtResource("3_oax4r")
 lifetime = 42.7
 preprocess = 85.4
+process_material = ExtResource("2_f4hgy")
 
 [node name="StarfieldMiddle" type="GPUParticles2D" parent="."]
 position = Vector2(1280, 360)
 amount = 250
-process_material = ExtResource("4_cvci4")
 texture = ExtResource("3_oax4r")
 lifetime = 64.0
 preprocess = 128.0
+process_material = ExtResource("4_cvci4")
 
 [node name="StarfieldBack" type="GPUParticles2D" parent="."]
 position = Vector2(1280, 360)
 amount = 1000
-process_material = ExtResource("5_ricxd")
 lifetime = 128.0
 preprocess = 256.0
+process_material = ExtResource("5_ricxd")

@@ -1,18 +1,19 @@
 [gd_scene load_steps=5 format=3 uid="uid://b7vrsbwevt2xy"]
 
-[ext_resource type="Script" path="res://scripts/game.gd" id="1_6xe2l"]
+[ext_resource type="Script" uid="uid://533otcsojo0o" path="res://scripts/game.gd" id="1_6xe2l"]
 [ext_resource type="PackedScene" uid="uid://c3jhgad74myma" path="res://scenes/player.tscn" id="1_h6fhk"]
 [ext_resource type="PackedScene" uid="uid://ymtwbpsn7q6" path="res://scenes/hud.tscn" id="2_yvwfo"]
 [ext_resource type="PackedScene" uid="uid://dtapedwf5bfad" path="res://scenes/player_spawn_area.tscn" id="7_scvdi"]
 
 [node name="Game" type="Node2D"]
-position = Vector2(1, 0)
 script = ExtResource("1_6xe2l")
 
 [node name="HUD" parent="." instance=ExtResource("2_yvwfo")]
 
 [node name="Player" parent="." instance=ExtResource("1_h6fhk")]
 z_index = 1
+position = Vector2(640, 360)
+scale = Vector2(0.425, 0.425)
 
 [node name="Lasers" type="Node2D" parent="."]
 

@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://7vdf4ymva8u1"]
 
-[ext_resource type="Script" path="res://scripts/main.gd" id="1_efve0"]
+[ext_resource type="Script" uid="uid://vi7i4b753ys3" path="res://scripts/main.gd" id="1_efve0"]
 [ext_resource type="PackedScene" uid="uid://chk7xkp2mqp7v" path="res://scenes/menu.tscn" id="1_w5mto"]
 [ext_resource type="PackedScene" uid="uid://b7vrsbwevt2xy" path="res://scenes/game.tscn" id="2_wcs76"]
 [ext_resource type="PackedScene" uid="uid://w3fpkkpjm0p6" path="res://scenes/starfield.tscn" id="3_r7s0j"]
